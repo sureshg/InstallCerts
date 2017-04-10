@@ -1,0 +1,12 @@
+/**
+ * Configure Gradle script kotlin for root and sub-projects.
+ * @param project project descriptor.
+ */
+def configureGSK(ProjectDescriptor project) {
+    project.buildFileName = 'build.gradle.kts'
+    project.children.each { configureGSK(it) }
+}
+
+rootProject.name = 'installcerts'
+configureGSK rootProject
+

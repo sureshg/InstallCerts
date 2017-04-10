@@ -1,0 +1,19 @@
+{
+    ":": {
+        "conventions": {
+            "base": "org.gradle.api.plugins.BasePluginConvention",
+            "java": "org.gradle.api.plugins.JavaPluginConvention",
+            "application": "org.gradle.api.plugins.ApplicationPluginConvention"
+        },
+        "extensions": {
+            "ext": "org.gradle.api.plugins.ExtraPropertiesExtension",
+            "kotlin": "org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension",
+            "kapt": "org.jetbrains.kotlin.gradle.plugin.KaptExtension",
+            "defaultArtifacts": "org.gradle.api.internal.plugins.DefaultArtifactPublicationSet",
+            "reporting": "org.gradle.api.reporting.ReportingExtension",
+            "capsule": "us.kirchmeier.capsule.CapsuleGradlePlugin.CapsuleGradleExtension",
+            "distributions": "org.gradle.api.distribution.DistributionContainer",
+            "idea": "org.gradle.plugins.ide.idea.model.IdeaModel"
+        }
+    }
+}
