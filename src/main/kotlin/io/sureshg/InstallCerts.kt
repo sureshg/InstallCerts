@@ -1,18 +1,34 @@
 package io.sureshg
 
-import java.util.jar.Manifest
+import io.airlift.airline.Help
+import io.airlift.airline.SingleCommand
+import io.sureshg.cmd.Install
+
 
 /**
  *
  *
- * @author <a href="mailto:sgopal1@walmartlabs.com">Suresh G</a>
- * @Since 4/10/17
+ * @author  Suresh
  */
 
-class Test
-fun main(args: Array<String>) {
-    println("Hello Kotlin")
 
-    println(Test::class.java.`package`.implementationVersion)
-    println(Test::class.java.`package`.implementationTitle)
+fun main(args: Array<String>) {
+
+    args.forEach { println( ">>>> $it") }
+    val cmd = SingleCommand.singleCommand(Install::class.java)
+    try {
+
+        val ping =   cmd.parse(*args)
+
+
+      //  Help.help(ping.helpOption?.commandMetadata)
+        if (ping.helpOption!!.showHelpIfRequested()) {
+            return
+        }
+
+        ping.run()
+    }catch (e: Exception) {
+        Help.help(cmd.commandMetadata)
+        println(e.message)
+    }
 }

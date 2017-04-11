@@ -94,7 +94,8 @@ tasks.withType<Jar> {
     manifest {
         attributes(mapOf("Author" to appAuthor,
                 IMPLEMENTATION_VERSION.toString() to appVersion,
-                IMPLEMENTATION_TITLE.toString() to application().applicationName))
+                IMPLEMENTATION_TITLE.toString() to application().applicationName,
+                MAIN_CLASS.toString() to application().mainClassName))
     }
 }
 
@@ -104,7 +105,7 @@ tasks.withType<Jar> {
 task<FatCapsule>("makeExecutable") {
     val minJavaVer = javaVersion.toString()
     archiveName = application().applicationName
-    reallyExecutable = ReallyExecutableSpec().trampolining()
+    reallyExecutable = ReallyExecutableSpec().regular()
     capsuleManifest = CapsuleManifest().apply {
         premainClass = "Capsule"
         mainClass = "Capsule"
@@ -112,8 +113,8 @@ task<FatCapsule>("makeExecutable") {
         applicationClass = application().mainClassName
         applicationVersion = version
         jvmArgs = listOf("-client")
-        args = listOf("$*")
         minJavaVersion = minJavaVer
+        //args = listOf("$@")
     }
     description = "Create $archiveName executable."
     dependsOn("clean")
