@@ -4,10 +4,10 @@ import io.airlift.airline.Arguments
 import io.airlift.airline.Command
 import io.airlift.airline.HelpOption
 import io.airlift.airline.Option
-import io.sureshg.extn.AnsiColor.*
-import io.sureshg.extn.color
-import io.sureshg.extn.sux
+import io.sureshg.crypto.InstallCerts
+import io.sureshg.extn.*
 import java.net.URL
+import java.util.jar.Attributes.Name.*
 import javax.inject.Inject
 
 /**
@@ -26,6 +26,9 @@ class Install {
 
     @Option(name = arrayOf("-p"), description = "Trust store password. Default is 'changeit'")
     var storePasswd = "changeit"
+
+    @Option(name = arrayOf("-a", "--all"), description = "Install all certs")
+    var all = false
 
     @Option(name = arrayOf("-v", "--verbose"), description = "Verbose mode")
     var verbose = false
@@ -50,20 +53,34 @@ class Install {
     /**
      * Tool version.
      */
-    val version by lazy {
-      Install::class.java.`package`.implementationVersion
+    val buildInfo by lazy {
+        Install::class.jarManifest?.let {
+            val attr = it.mainAttributes
+            BuildInfo(attr.getValue("Built-By"),
+                    attr.getValue("Built-Date"),
+                    attr.getValue(IMPLEMENTATION_VERSION))
+        } ?: BuildInfo()
     }
 
     /**
      * Executes the command
      */
     fun run() {
-        if (uri.isEmpty()) throw IllegalArgumentException("Server URL can't be empty!")
-        if(showVersion) {
-            println("".sux)
-            System.exit(0)
+        when {
+            showVersion -> {
+                val version = """|InstallCerts version: ${buildInfo.version ?: "N/A"}
+                                 |Build Date: ${buildInfo.date ?: "N/A"}
+                              """.trimMargin()
+                println(version.bold.cyan)
+                System.exit(0)
+            }
+            uri.isEmpty() -> throw IllegalArgumentException("Server URL can't be empty!")
         }
+        InstallCerts.exec(this)
     }
-
-    override fun toString() = "Install(uri=$uri, hostPort=$hostPort)"
 }
+
+/**
+ * Build info class
+ */
+data class BuildInfo(val by: String? = null, val date: String? = null, val version: String? = null)

@@ -1,13 +1,19 @@
 package io.sureshg.extn
 
-import sun.misc.HexDumpEncoder
 import java.io.File
+import java.net.JarURLConnection
+import java.util.jar.Manifest
 import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
+import sun.misc.HexDumpEncoder
+import java.io.IOException
+import java.nio.file.*
+import java.nio.file.attribute.BasicFileAttributes
+import java.util.*
+import kotlin.reflect.KClass
 import kotlin.text.Charsets.UTF_8
-import io.sureshg.extn.AnsiColor.*
 
 /**
  * Common extension functions.
@@ -20,6 +26,16 @@ const val SPACE = " "
 val LINE_SEP = System.lineSeparator()
 
 val FILE_SEP = File.separator
+
+/**
+ * Prints the [Any.toString] to console.
+ */
+inline val Any?.p get() = println(this)
+
+/**
+ * Random number generator.
+ */
+val RAND = Random(System.nanoTime())
 
 /**
  * Prepend an empty string of size [col] to the string.
@@ -70,53 +86,6 @@ val Byte.hi get() = toInt() and 0xF0 shr 4
 val Byte.lo get() = toInt() and 0x0F
 
 /**
- * Colorize the string.
- *
- * @param fg foreground [AnsiColor]
- * @param bg background  [AnsiColor]
- * @param prefix string to prepend
- */
-fun String.color(fg: AnsiColor, bg: AnsiColor = DEFAULT_BG, prefix: String = "") = "${fg.eSeq}${bg.eSeq}$prefix ${this}${NO_COLOR.eSeq}"
-
-/**
- * Formatted strings.
- */
-val String.cyan get() = color(CYAN)
-
-val String.red get() = color(RED)
-
-val String.green get() = color(GREEN)
-
-val String.yellow get() = color(YELLOW)
-
-val String.bold get() = color(BOLD)
-
-/**
- * Success string
- */
-val String.sux get() = color(CYAN, prefix = "\u2713")
-
-/**
- * Error string
- */
-val String.err get() = color(LIGHT_RED, prefix = "\u2717")
-
-/**
- * Warn string
- */
-val String.warn get() = color(YELLOW, prefix = "\u27A4")
-
-/**
- * High voltage string
- */
-val String.highvolt get() = color(YELLOW, prefix = "\u26A1")
-
-/**
- * Completed (Beer Glass) string.
- */
-val String.done get() = prependIndent(" ").color(GREEN, prefix = "\uD83C\uDF7A")
-
-/**
  * Convert string to hex.
  */
 val String.hex: String get() = toByteArray(UTF_8).hex
@@ -126,14 +95,12 @@ val String.hex: String get() = toByteArray(UTF_8).hex
  */
 val String.oct: String get() = toByteArray(UTF_8).oct
 
-
 /**
  * IPV4 regex pattern
  */
 val ip_regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$".toRegex()
 
 val String.isIPv4 get() = matches(ip_regex)
-
 
 /**
  *  Create an MD5 hash of a string.
@@ -241,4 +208,38 @@ fun String.aes128Encrypt(key: String): ByteArray {
     val cipher = Cipher.getInstance("AES/ECB/NoPadding")
     cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(nkey.toByteArray(UTF_8), "AES"))
     return cipher.doFinal(msg.toByteArray(UTF_8))
+}
+
+/**
+ * Deletes the files or directory (recursively) represented by this path.
+ */
+fun Path.delete() {
+    if (Files.notExists(this)) {
+        return
+    }
+    if (Files.isDirectory(this)) {
+        Files.walkFileTree(this, object : SimpleFileVisitor<Path>() {
+            override fun visitFile(file: Path, attrs: BasicFileAttributes) = let {
+                Files.delete(file)
+                FileVisitResult.CONTINUE
+            }
+
+            override fun postVisitDirectory(dir: Path, exc: IOException) = let {
+                Files.delete(dir)
+                FileVisitResult.CONTINUE
+            }
+        })
+    } else {
+        Files.delete(this)
+    }
+}
+
+/**
+ * Returns the jar [Manifest] of the class. Returns [null] if the class
+ * is not bundled in a jar (Classes in an unpacked class hierarchy).
+ */
+val <T : Any> KClass<T>.jarManifest: Manifest? get() {
+    val res = java.getResource("${java.simpleName}.class")
+    val conn = res.openConnection()
+    return if (conn is JarURLConnection) conn.manifest else null
 }
