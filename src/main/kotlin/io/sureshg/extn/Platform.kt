@@ -11,7 +11,6 @@ import kotlin.text.RegexOption.IGNORE_CASE
  *
  * @author Suresh
  */
-
 object Platform {
 
     val os: OS

@@ -5,7 +5,9 @@ import io.airlift.airline.Command
 import io.airlift.airline.HelpOption
 import io.airlift.airline.Option
 import io.sureshg.crypto.InstallCerts
-import io.sureshg.extn.*
+import io.sureshg.extn.bold
+import io.sureshg.extn.cyan
+import io.sureshg.extn.jarManifest
 import java.net.URL
 import java.util.jar.Attributes.Name.*
 import javax.inject.Inject
@@ -24,10 +26,10 @@ class Install {
     @Arguments(description = "Server URL. Default port is 443", usage = "<host>[:port]")
     var uri = ""
 
-    @Option(name = arrayOf("-p"), description = "Trust store password. Default is 'changeit'")
+    @Option(name = arrayOf("-p", "--passwd"), description = "Trust store password. Default is 'changeit'")
     var storePasswd = "changeit"
 
-    @Option(name = arrayOf("-a", "--all"), description = "Install all certs")
+    @Option(name = arrayOf("-a", "--all"), description = "Show all certs and exits.")
     var all = false
 
     @Option(name = arrayOf("-v", "--verbose"), description = "Verbose mode")

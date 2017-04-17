@@ -46,9 +46,9 @@ class ConsoleFormatter : Formatter() {
     override fun format(logRec: LogRecord): String {
         val msg = logRec.message
         val fmtMsg = when (logRec.level) {
+            INFO -> msg
             SEVERE -> msg.err
             WARNING -> msg.warn
-            INFO -> msg
             FINE -> msg.sux
             FINER -> msg.done
             FINEST -> msg.highvolt
