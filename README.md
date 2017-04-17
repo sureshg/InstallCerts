@@ -19,6 +19,8 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
      $ ./gradlew
     ```
     > The binary would be located at `build/libs/installcerts`
+    
+    Inorder to build a new version, change it in the [gradle properties](https://github.com/sureshg/InstallCerts/blob/master/gradle.properties#L6) or pass it to `./gradlew -PappVersion=1.0.0`
 
 ### Usage
 
