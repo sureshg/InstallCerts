@@ -9,9 +9,7 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
 
    [Download (v1.0.0)](https://github.com/sureshg/InstallCerts/releases/download/1.0.0/installcerts)
 
-   > After download, make sure to set the execute permission (`chmod +x installcerts`)
-   
-   > Windows users can run the executable jar.
+   > After download, make sure to set the execute permission (`chmod +x installcerts`). Windows users can run the executable jar.
 
 * Source
 
