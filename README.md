@@ -1,4 +1,4 @@
-# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.0-green.svg) ](https://github.com/sureshg/InstallCerts/releases/latest)
+# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.0-green.svg) ](https://github.com/sureshg/InstallCerts/releases/download/1.0.0/installcerts)
 
 `InstallCerts` is a simple cli tool to create [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) trustStore by retrieving server's TLS certificates.
 You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) and java [Keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html) commands, but `InstallCerts` makes it fully automated using a single command.
@@ -7,7 +7,7 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
 
 * Binary
 
-   [Download (v1.0.0)](https://github.com/sureshg/InstallCerts/releases/latest)
+   [Download (v1.0.0)](https://github.com/sureshg/InstallCerts/releases/download/1.0.0/installcerts)
 
    > After download, make sure to set the execute permission (`chmod +x installcerts`)
    > Windows users can run the executable jar.
@@ -89,31 +89,33 @@ OPTIONS
        MD5    : 3E 45 52 15 09 51 92 E1 B7 5D 37 9F B1 87 29 8A
        SAN    :
        Expiry : Fri Jan 28 04:00:00 PST 2028
+  
      ```
     
   * To create PKCS12 file
   
-    ``` 
-    $ installcerts https://self-signed.badssl.com/
-    Loading default ca truststore...
-    Opening connection to self-signed.badssl.com:443...
-    
-    Starting SSL handshake...
-    Server sent 1 certificate(s)...
-    
-    1) Adding certificate to keystore using alias self-signed.badssl.com-1...
-    Subject - CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
-      Issuer : CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
-      SHA1   : 64 14 50 D9 4A 65 FA EB 3B 63 10 28 D8 E8 6C 95 43 1D B8 11
-      MD5    : 46 10 F4 1F 93 A3 EE 58 E0 CC 69 BE 1C 71 E0 C0
-      SAN    : [2, *.badssl.com, 2, badssl.com]
-      Expiry : Wed Aug 08 14:17:05 PDT 2018
-    
-    Starting SSL handshake...
-    Certificate is trusted. Saving the trustore...
-    
-    🍺  PKCS12 truststore saved to installcerts/self-signed_badssl_com.p12
-    ```
+    ```ruby
+        $ installcerts https://self-signed.badssl.com/
+        Loading default ca truststore...
+        Opening connection to self-signed.badssl.com:443...
+        
+        Starting SSL handshake...
+        Server sent 1 certificate(s)...
+        
+        1) Adding certificate to keystore using alias self-signed.badssl.com-1...
+        Subject - CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
+          Issuer : CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
+          SHA1   : 64 14 50 D9 4A 65 FA EB 3B 63 10 28 D8 E8 6C 95 43 1D B8 11
+          MD5    : 46 10 F4 1F 93 A3 EE 58 E0 CC 69 BE 1C 71 E0 C0
+          SAN    : [2, *.badssl.com, 2, badssl.com]
+          Expiry : Wed Aug 08 14:17:05 PDT 2018
+        
+        Starting SSL handshake...
+        Certificate is trusted. Saving the trustore...
+        
+        🍺  PKCS12 truststore saved to installcerts/self-signed_badssl_com.p12    
+       ```
+
   * Some useful Keytool commands
     
     ```ruby
