@@ -265,11 +265,11 @@ fun main(args: Array<String>) {
     "Clojure".magenta.bold.p
     "Ruby".err.bold.p
 
-    for (i in 1..100) {
+    for (i in 1..50) {
         "Hello $i".fgGrayScale(i).p
     }
 
-    for (i in 1..100) {
+    for (i in 1..50) {
         "Hello $i".bgGrayScale(i).p
     }
 

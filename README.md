@@ -1,4 +1,4 @@
-# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.0-green.svg) ](https://github.com/sureshg/InstallCerts/releases/download/1.0.0/installcerts)
+# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.1-green.svg) ](https://github.com/sureshg/InstallCerts/releases/download/1.0.1/installcerts)
 
 `InstallCerts` is a simple cli tool to create [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) trustStore by retrieving server's TLS certificates.
 You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) and java [Keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html) commands, but `InstallCerts` makes it fully automated using a single command.
@@ -7,7 +7,7 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
 
 * Binary
 
-   [Download (v1.0.0)](https://github.com/sureshg/InstallCerts/releases/download/1.0.0/installcerts)
+   [Download (v1.0.1)](https://github.com/sureshg/InstallCerts/releases/download/1.0.1/installcerts)
 
    > After download, make sure to set the execute permission (`chmod +x installcerts`). Windows users can run the executable jar.
 
@@ -20,103 +20,187 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
     ```
     > The binary would be located at `build/libs/installcerts`
     
-    Inorder to build a new version, change it in the [gradle properties](https://github.com/sureshg/InstallCerts/blob/master/gradle.properties#L6) or pass it to `./gradlew -PappVersion=1.0.0`
+    Inorder to build a new version, change `appVersion` in the [gradle properties](https://github.com/sureshg/InstallCerts/blob/master/gradle.properties) or pass it to `./gradlew -PappVersion=1.0.1`
 
 ### Usage
 
 ```ruby
 $ installcerts -h
-NAME
-        installcerts - Creates PKCS12 TrustStore by retrieving server certificates
-
-SYNOPSIS
-        installcerts [(-a | --all)] [(-h | --help)]
-                [(-p <storePasswd> | --passwd <storePasswd>)] [(-v | --verbose)]
-                [(-V | --version)] [--] <host>[:port]
-
-OPTIONS
-        -a, --all
-            Show all certs and exits.
-
-        -h, --help
-            Display help information
-
-        -p <storePasswd>, --passwd <storePasswd>
-            Trust store password. Default is 'changeit'
-
-        -v, --verbose
-            Verbose mode
-
-        -V, --version
-            Show version
-
-        --
-            This option can be used to separate command-line options from the
-            list of argument, (useful when arguments might be mistaken for
-            command-line options
-
-        <host>[:port]
-            Server URL. Default port is 443
+  NAME
+          installcerts - Creates PKCS12 TrustStore by retrieving server
+          certificates
+  
+  SYNOPSIS
+          installcerts [(-a | --all)] [(-d | --debug)] [(-h | --help)]
+                  [(-p <storePasswd> | --passwd <storePasswd>)] [(-v | --verbose)]
+                  [(-V | --version)] [--] <host>[:port]
+  
+  OPTIONS
+          -a, --all
+              Show all certs and exits.
+  
+          -d, --debug
+              Enable TLS debug tracing.
+  
+          -h, --help
+              Display help information
+  
+          -p <storePasswd>, --passwd <storePasswd>
+              Trust store password. Default is 'changeit'
+  
+          -v, --verbose
+              Verbose mode
+  
+          -V, --version
+              Show version
+  
+          --
+              This option can be used to separate command-line options from the
+              list of argument, (useful when arguments might be mistaken for
+              command-line options
+  
+          <host>[:port]
+              Server URL. Default port is 443
 ```
 
 ### Examples
 
-  *  To list all TLS certificates
+  *  To list all TLS certificates (`-a`)
   
      ```ruby
-     $ installcerts walmart.com  -a
-     Loading default ca truststore...
-     Opening connection to walmart.com:443...
-     
-     Starting SSL handshake...
-     
-     1) Subject - CN=www.walmart.com, O="Wal-Mart Stores, Inc.", L=Bentonville, ST=Arkansas, C=US
-       Issuer : CN=GlobalSign Organization Validation CA - SHA256 - G2, O=GlobalSign nv-sa, C=BE
-       SHA1   : DF 3C BB 19 68 95 F7 9A BE 99 44 D1 0D 3A CA A5 C7 21 1A 90
-       MD5    : CE 58 55 38 BE A5 A8 E4 FA 45 4C 5D 88 7B 98 04
-       SAN    : [2, www.walmart.com, 2, walmart.com]
-       Expiry : Fri Sep 07 23:10:43 PDT 2018
-     
-     2) Subject - CN=GlobalSign Organization Validation CA - SHA256 - G2, O=GlobalSign nv-sa, C=BE
-       Issuer : CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
-       SHA1   : 90 2E F2 DE EB 3C 5B 13 EA 4C 3D 51 93 62 93 09 E2 31 AE 55
-       MD5    : D3 E8 70 6D 82 92 AC E4 DD EB F7 A8 BB BD 56 6B
-       SAN    :
-       Expiry : Tue Feb 20 02:00:00 PST 2024
-     
-     3) Subject - CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
-       Issuer : CN=GlobalSign Root CA, OU=Root CA, O=GlobalSign nv-sa, C=BE
-       SHA1   : B1 BC 96 8B D4 F4 9D 62 2A A8 9A 81 F2 15 01 52 A4 1D 82 9C
-       MD5    : 3E 45 52 15 09 51 92 E1 B7 5D 37 9F B1 87 29 8A
-       SAN    :
-       Expiry : Fri Jan 28 04:00:00 PST 2028
-  
+     $ installcerts google.com -a
+
+       Loading default ca truststore...
+       Opening connection to google.com:443...
+       
+       Starting SSL handshake...
+       
+       1) Subject - CN=*.google.com, O=Google Inc, L=Mountain View, ST=California, C=US
+         Issuer : CN=Google Internet Authority G2, O=Google Inc, C=US
+         SHA1   : 5A B6 93 22 33 B7 58 4F D2 BA 42 FE 94 53 65 79 19 E9 7B BC
+         MD5    : 16 1F 54 D8 3A E9 33 78 DE 68 72 4C 80 5C 98 C4
+         SAN    : *.google.com
+                  *.android.com
+                  *.appengine.google.com
+                  *.cloud.google.com
+                  *.gcp.gvt2.com
+                  *.google-analytics.com
+                  *.googleadapis.com
+                  *.googleapis.cn
+                  *.url.google.com
+                  *.youtube-nocookie.com
+                  *.youtube.com
+                  *.youtubeeducation.com
+                  *.ytimg.com
+                  android.clients.google.com
+                  android.com
+                  developer.android.google.cn
+                  developers.android.google.cn
+                  g.co
+                  goo.gl
+                  google-analytics.com
+                  google.com
+                  googlecommerce.com
+                  source.android.google.cn
+                  urchin.com
+                  www.goo.gl
+                  youtu.be
+                  youtube.com
+                  youtubeeducation.com
+         Expiry : Fri Jul 14 01:25:00 PDT 2017
+       
+       2) Subject - CN=Google Internet Authority G2, O=Google Inc, C=US
+         Issuer : CN=GeoTrust Global CA, O=GeoTrust Inc., C=US
+         SHA1   : D6 AD 07 C6 67 56 30 F5 7B 92 7F 66 BE 8C E1 F7 68 F8 79 48
+         MD5    : C5 6F 1A 63 B8 17 B7 31 89 34 C0 6E C5 AB B5 B3
+         SAN    :
+         Expiry : Sun Dec 31 15:59:59 PST 2017
+       
+       3) Subject - CN=GeoTrust Global CA, O=GeoTrust Inc., C=US
+         Issuer : OU=Equifax Secure Certificate Authority, O=Equifax, C=US
+         SHA1   : 73 59 75 5C 6D F9 A0 AB C3 06 0B CE 36 95 64 C8 EC 45 42 A3
+         MD5    : 2E 7D B2 A3 1D 0E 3D A4 B2 5F 49 B9 54 2A 2E 1A
+         SAN    :
+         Expiry : Mon Aug 20 21:00:00 PDT 2018
+       
+       SSL-Session:
+         Protocol    : TLSv1.2
+         CipherSuite : TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+         Session-ID  : 68 3E AD 92 27 59 F6 C2 C5 BF 10 58 04 BF AC 6C 06 DF E9 74 05 A5 39 D2 0E 1F 97 4B 4F 03 81 64
+         Timeout     : 86400
+         Create Time : Mon Apr 24 11:10:04 PDT 2017
+         Access Time : Mon Apr 24 11:10:04 PDT 2017
+         Values      :
+
      ```
     
   * To create PKCS12 file
   
     ```ruby
-        $ installcerts https://self-signed.badssl.com/
-        Loading default ca truststore...
-        Opening connection to self-signed.badssl.com:443...
-        
-        Starting SSL handshake...
-        Server sent 1 certificate(s)...
-        
-        1) Adding certificate to keystore using alias self-signed.badssl.com-1...
-        Subject - CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
-          Issuer : CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
-          SHA1   : 64 14 50 D9 4A 65 FA EB 3B 63 10 28 D8 E8 6C 95 43 1D B8 11
-          MD5    : 46 10 F4 1F 93 A3 EE 58 E0 CC 69 BE 1C 71 E0 C0
-          SAN    : [2, *.badssl.com, 2, badssl.com]
-          Expiry : Wed Aug 08 14:17:05 PDT 2018
-        
-        Starting SSL handshake...
-        Certificate is trusted. Saving the trustore...
-        
-        🍺  PKCS12 truststore saved to installcerts/self-signed_badssl_com.p12    
+        $ installcerts https://self-signed.badssl.com
+    
+          Loading default ca truststore...
+          Opening connection to self-signed.badssl.com:443...
+          
+          Starting SSL handshake...
+          Server sent 1 certificate(s)...
+          
+          1) Adding certificate to keystore using alias self-signed.badssl.com-1...
+          Subject - CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
+            Issuer : CN=*.badssl.com, O=BadSSL, L=San Francisco, ST=California, C=US
+            SHA1   : 64 14 50 D9 4A 65 FA EB 3B 63 10 28 D8 E8 6C 95 43 1D B8 11
+            MD5    : 46 10 F4 1F 93 A3 EE 58 E0 CC 69 BE 1C 71 E0 C0
+            SAN    : *.badssl.com
+                     badssl.com
+            Expiry : Wed Aug 08 14:17:05 PDT 2018
+          
+          Starting SSL handshake...
+          Certificate is trusted. Saving the trustore...
+          
+          🍺  PKCS12 truststore saved to /Users/sgopal1/code/kotlin/installcerts/self-signed_badssl_com.p12  
        ```
+  
+  * Debug TLS Session (`-d`)   
 
+    ```ruby
+        $ installcerts https://rsa2048.badssl.com/ -d
+    
+          ➤ Enabling TLS debug tracing...
+          Loading default ca truststore...
+          Opening connection to rsa2048.badssl.com:443...
+          adding as trusted cert:
+            Subject: CN=Equifax Secure Global eBusiness CA-1, O=Equifax Secure Inc., C=US
+            Issuer:  CN=Equifax Secure Global eBusiness CA-1, O=Equifax Secure Inc., C=US
+            Algorithm: RSA; Serial number: 0xc3517
+            Valid from Sun Jun 20 21:00:00 PDT 1999 until Sun Jun 21 21:00:00 PDT 2020
+          ...
+          Extension signature_algorithms, signature_algorithms: SHA512withECDSA, SHA512withRSA, SHA384withECDSA, SHA384withRSA, SHA256withECDSA,...
+          Extension server_name, server_name: [type=host_name (0), value=rsa2048.badssl.com]
+          ***
+          [write] MD5 and SHA1 hashes:  len = 194
+          0000: 01 00 00 BE 03 03 58 FE   41 39 72 B5 AA 3D F4 04  ......X.A9r..=..
+          0010: 9E 4B E2 C4 C3 D0 44 2E   6C A7 19 67 58 01 AC D0  .K....D.l..gX...
+          0020: 40 C3 D8 6A B7 AD 00 00   3A C0 23 C0 27 00 3C C0  @..j....:.#.'.<.
+          0030: 25 C0 29 00 67 00 40 C0   09 C0 13 00 2F C0 04 C0  %.).g.@...../...
+          0040: 0E 00 33 00 32 C0 2B C0   2F 00 9C C0 2D C0 31 00  ..3.2.+./...-.1.
+          ...
+          
+          Cached client session: [Session-1, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256]
+          [read] MD5 and SHA1 hashes:  len = 16
+          0000: 14 00 00 0C 98 CD 71 4B   98 1E 07 A0 3B 82 B1 84  ......qK....;...
+          main, called close()
+          main, called closeInternal(true)
+          main, SEND TLSv1.2 ALERT:  warning, description = close_notify
+          Padded plaintext before ENCRYPTION:  len = 2
+          0000: 01 00                                              ..
+          main, WRITE: TLSv1.2 Alert, length = 26
+          [Raw write]: length = 31
+          0000: 15 03 03 00 1A 00 00 00   00 00 00 00 01 71 F1 91  .............q..
+          0010: C5 97 8D 78 EC FA 7D B4   C5 91 69 6C BD 99 78     ...x......il..x
+          main, called closeSocket(true)
+          🍺  No errors, certificate is already trusted!
+       ```    
+         
   * Some useful Keytool commands
     
     ```ruby

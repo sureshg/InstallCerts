@@ -4,15 +4,14 @@ import io.sureshg.extn.KeyStoreType.PKCS12
 import sun.security.x509.*
 import java.io.File
 import java.net.URI
-import java.nio.charset.StandardCharsets
 import java.security.KeyStore
 import java.security.KeyStore.PasswordProtection
 import java.security.SecureRandom
+import java.security.Security
 import java.security.cert.*
 import java.util.*
 import javax.net.ssl.*
 import javax.security.auth.x500.X500Principal
-
 
 /**
  * Certs/TLS extension functions.
@@ -47,6 +46,42 @@ enum class KeyStoreType {
     PKCS12
 }
 
+/**
+ * JSSE system properties for customization.
+ *
+ * @param prop property name
+ * @param desc Detailed description of the property
+ * @param system indicate whether it's a System or Security property.
+ *               [true] if it's customized by setting System property.
+ */
+enum class JSSEProp(val prop: String, val desc: String, val system: Boolean = true) {
+    Debug("javax.net.debug", "Debugging SSL/TLS Connections."),
+    KeyStore("javax.net.ssl.keyStore", "Default keystore"),
+    KeyStoreType("javax.net.ssl.keyStoreType", "Default keystore type"),
+    KeyStorePassword("javax.net.ssl.keyStorePassword", "Default keystore password"),
+    KeyStoreProvider("javax.net.ssl.keyStoreProvider", "Default keystore provider"),
+    TrustStore("javax.net.ssl.trustStore", "Default truststore"),
+    TrustStoreType("javax.net.ssl.trustStoreType", "Default truststore type"),
+    TrustStorePassword("javax.net.ssl.trustStorePassword", "Default truststore password"),
+    TrustStoreProvider("javax.net.ssl.trustStoreProvider", "Default truststore provider"),
+    ProxyHost("https.proxyHost", "Default HTTPS proxy host"),
+    ProxyPort("https.proxyPort", "Default HTTPS proxy port"),
+    HttpsCipherSuites("https.cipherSuites", "Default cipher suites"),
+    HttpsProtocols("https.protocols", "Default HTTPS handshaking protocols"),
+    TLSProtocols("jdk.tls.client.protocols", "Default Enabled TLS Protocols"),
+    CertPathDisabledAlgos("jdk.certpath.disabledAlgorithms", "Disabled certificate verification cryptographic algorithms", false),
+    TLSDisabledAlgos("jdk.tls.disabledAlgorithms", "Disabled/Restricted Algorithms", false);
+
+    /**
+     * Sets the JSSE system/security property to the given value.
+     */
+    fun set(value: String) {
+        when (system) {
+            true -> System.setProperty(prop, value)
+            else -> Security.setProperty(prop, value)
+        }
+    }
+}
 
 /**
  * Returns the file name of the default JDK CA trust store.
@@ -95,17 +130,33 @@ val X509Certificate.selfSigned get() = signedBy(this)
 
 /**
  * Returns short cert info string suitable for printing.
+ * For SAN, it returns the GenericName pair -> Filtering
+ * the string names and indents the list to display properly.
  */
-fun X509Certificate.info() = let {
-    """|Subject - ${it.subjectDN}
-       |  Issuer : ${it.issuerDN}
-       |  SHA1   : ${it.encoded.sha1}
-       |  MD5    : ${it.encoded.md5}
-       |  SAN    : ${it.subjectAlternativeNames?.flatten() ?: ""}
-       |  Expiry : ${it.notAfter}
-       """.trimMargin()
+fun X509Certificate.info() = run {
+    """|Subject - $subjectDN
+       |  Issuer : $issuerDN
+       |  SHA1   : ${encoded.sha1}
+       |  MD5    : ${encoded.md5}
+       |  SAN    : ${subjectAlternativeNames?.flatten()?.filterIsInstance<String>()?.indent(11, skip = 1)?.joinToString(LINE_SEP) ?: ""}
+       |  Expiry : $notAfter
+     """.trimMargin()
 }
 
+/**
+ * Returns short ssl session info string suitable for printing.
+ */
+fun SSLSession.info() = run {
+    """|SSL-Session:
+       |  Protocol    : $protocol
+       |  CipherSuite : $cipherSuite
+       |  Session-ID  : ${id?.hex ?: ""}
+       |  Timeout     : ${sessionContext?.sessionTimeout ?: ""}
+       |  Create Time : ${Date(creationTime)}
+       |  Access Time : ${Date(lastAccessedTime)}
+       |  Values      : ${this.valueNames?.joinToString() ?: ""}
+     """.trimMargin()
+}
 
 /**
  * Returns the [X500Name] from the [X500Principal]
@@ -115,8 +166,10 @@ val X500Principal.x500Name get() : X500Name = X500Name.asX500Name(this)
 
 /**
  * Returns a [SavingTrustManager] for this trust manager.
+ *
+ * @param validate [true] to validate certificate chains. It's enabled by default.
  */
-fun X509TrustManager.saving() = SavingTrustManager(this)
+fun X509TrustManager.saving(validate: Boolean = true) = SavingTrustManager(this, validate)
 
 
 /**
@@ -165,51 +218,63 @@ fun KeyStore.toPKCS12(keyPasswd: CharArray? = null): KeyStore {
     }
 }
 
+/**
+ * Return [X509TrustManager] for the [KeyStore]
+ */
+inline val KeyStore.trustManagers get() = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).let { tm ->
+    tm.init(this)
+    tm.trustManagers.filterIsInstance<X509TrustManager>()
+}
 
 /**
  * Returns the default [X509TrustManager] for the [KeyStore]
  */
-val KeyStore.defaultTrustManager get() = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).let { tm ->
-    tm.init(this)
-    tm.trustManagers[0] as X509TrustManager
-}
+inline val KeyStore.defaultTrustManager get() = trustManagers[0]
 
+
+/**
+ * Returns [X509KeyManager] for the [KeyStore]
+ */
+fun KeyStore.keyManagers(passwd: CharArray? = null) = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()).let { km ->
+    km.init(this, passwd)
+    km.keyManagers.filterIsInstance<X509KeyManager>()
+}
 
 /**
  * Returns the default [X509KeyManager] for the [KeyStore]
  */
-fun KeyStore.defaultKeyManager(passwd: CharArray? = null) = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()).let { km ->
-    km.init(this, passwd)
-    km.keyManagers[0] as X509KeyManager
-}
+fun KeyStore.defaultKeyManager(passwd: CharArray? = null) = keyManagers(passwd)[0]
 
 
 /**
- * Returns a [SSLSocketFactory] instance for given [protocol] SSL context and X509 key and trust store managers.
+ * Returns a [SSLContext] instance for given [protocol] and X509 key and trust store managers.
+ * TrustManagers decide whether to allow connections and KeyManagers decide which key material
+ * to use.
  *
  * @param protocol SSL context protocol
  * @param keyManagers [X509KeyManager] which manages your keystore
  * @param trustManagers [X509TrustManager] which manages your trust store
  * @param secureRandom [SecureRandom] instance.
  */
-fun getSSLSockFactory(protocol: String = "Default",
-                      keyManagers: Array<out X509KeyManager>? = null,
-                      trustManagers: Array<out X509TrustManager>? = null,
-                      secureRandom: SecureRandom? = null) = SSLContext.getInstance(protocol).let {
+fun getSSLContext(protocol: String = "Default",
+                  keyManagers: Array<out X509KeyManager>? = null,
+                  trustManagers: Array<out X509TrustManager>? = null,
+                  secureRandom: SecureRandom? = null) = SSLContext.getInstance(protocol).apply {
     // No need to init the default SSLContext.
     if (protocol != "Default") {
-        it.init(keyManagers, trustManagers, secureRandom)
+        init(keyManagers, trustManagers, secureRandom)
     }
-    it.socketFactory
 }
-
 
 /**
  * An [X509TrustManager] to save the server/client cert chains.
  *
+ * @param tm delegating [X509TrustManager]
+ * @param validate [true] to validate certificate chains. It's enabled by default.
+ *
  * @param tm [X509TrustManager]
  */
-class SavingTrustManager(private val tm: X509TrustManager) : X509TrustManager {
+class SavingTrustManager(private val tm: X509TrustManager, val validate: Boolean = true) : X509TrustManager {
 
     var chain = listOf<X509Certificate>()
 
@@ -221,26 +286,13 @@ class SavingTrustManager(private val tm: X509TrustManager) : X509TrustManager {
 
     private fun save(authType: String, chain: Array<X509Certificate>, server: Boolean) {
         this.chain = chain.toList()
-        when (server) {
-            true -> tm.checkServerTrusted(chain, authType)
-            else -> tm.checkClientTrusted(chain, authType)
+        if (validate) {
+            when (server) {
+                true -> tm.checkServerTrusted(chain, authType)
+                else -> tm.checkClientTrusted(chain, authType)
+            }
         }
     }
-}
-
-
-/**
- * Decodes a PEM-encoded block to DER. PEM (Privacy-enhanced Electronic Mail)
- * is Base64 encoded DER certificate, enclosed between
- * "-----BEGIN CERTIFICATE-----" and "-----END CERTIFICATE-----". The string,
- * according to RFC 1421, can only contain characters in the base-64 alphabet
- * and whitespaces.
- *
- * @return the decoded bytes
- */
-fun String.decodePEM(): ByteArray {
-    val src = replace("\\s+".toRegex(), "").toByteArray(StandardCharsets.ISO_8859_1)
-    return Base64.getDecoder().decode(src)
 }
 
 /**
@@ -284,16 +336,16 @@ fun X509Certificate.readCRLs(): List<X509CRL> {
 }
 
 /**
- * Verify the keystore public/private key certificate againt the CRL.
+ * Verify the keystore public/private key certificate against the CRL.
  *
+ * @return alias of the verified cert, else returns null.
  * @see [Keytool](https://goo.gl/4eKRfc)
  */
-fun KeyStore.verifyCRL(crl: CRL): String? {
-    val xcrl = crl as X509CRLImpl
+fun KeyStore.verifyCRL(crl: X509CRL): String? {
     aliases().toList()
             .map { getCertificate(it) }
             .filterIsInstance<X509Certificate>()
-            .filter { it.subjectX500Principal == xcrl.issuerX500Principal }
+            .filter { it.subjectX500Principal == crl.issuerX500Principal }
             .forEach {
                 try {
                     crl.verify(it.publicKey)

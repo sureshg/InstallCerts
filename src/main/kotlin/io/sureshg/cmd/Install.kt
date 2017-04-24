@@ -35,6 +35,9 @@ class Install {
     @Option(name = arrayOf("-v", "--verbose"), description = "Verbose mode")
     var verbose = false
 
+    @Option(name = arrayOf("-d", "--debug"), description = "Enable TLS debug tracing.")
+    var debug = false
+
     @Option(name = arrayOf("-V", "--version"), description = "Show version")
     var showVersion = false
 

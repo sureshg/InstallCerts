@@ -1,18 +1,22 @@
 package io.sureshg.extn
 
+import sun.misc.HexDumpEncoder
 import java.io.File
+import java.io.IOException
 import java.net.JarURLConnection
-import java.util.jar.Manifest
+import java.nio.file.FileVisitResult
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.SimpleFileVisitor
+import java.nio.file.attribute.BasicFileAttributes
 import java.security.MessageDigest
+import java.util.*
+import java.util.jar.Manifest
 import javax.crypto.Cipher
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
-import sun.misc.HexDumpEncoder
-import java.io.IOException
-import java.nio.file.*
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.*
 import kotlin.reflect.KClass
+import kotlin.text.Charsets.US_ASCII
 import kotlin.text.Charsets.UTF_8
 
 /**
@@ -45,9 +49,15 @@ val RAND = Random(System.nanoTime())
 fun String.indent(col: Int) = prependIndent(SPACE.repeat(col))
 
 /**
- * Prepend an empty string of size [col] to each string in the list.
+ * Prepend an empty string of size [col] to each string in the list by skipping first [skip] strings.
+ *
+ * @param skip number of head elements to skip from indentation.
+ *             Default to 0 if it's out of bound of list size [0..size]
  */
-fun List<String>.indent(col: Int) = map { it.indent(col) }
+fun List<String>.indent(col: Int, skip: Int = 0): List<String> {
+    val skipCount = if (skip in 0..size) skip else 0
+    return mapIndexed { idx, str -> if (idx < skipCount) str else str.indent(col) }
+}
 
 /**
  * Convert [Byte] to hex. '0x100' OR is used to preserve the leading zero in case of single hex digit.
@@ -118,6 +128,25 @@ val String.sha1 get() = hash(toByteArray(UTF_8), "SHA-1")
 val String.sha256 get() = hash(toByteArray(UTF_8), "SHA-256")
 
 /**
+ * Encodes the string into Base64 encoded one.
+ */
+inline val String.base64 get() = Base64.getEncoder().encodeToString(toByteArray(US_ASCII))
+
+/**
+ * Decodes the base64 string.
+ */
+inline val String.base64Decode get() = base64DecodeBytes.toString(US_ASCII)
+
+/**
+ * Decodes the base64 string to byte array. It removes all extra spaces in the
+ * input string before doing the base64 decode operation.
+ */
+inline val String.base64DecodeBytes: ByteArray get() {
+    val str = replace("\\s+".toRegex(), "")
+    return Base64.getDecoder().decode(str)
+}
+
+/**
  *  Create an MD5 hash of [ByteArray].
  */
 val ByteArray.md5 get() = hash(this, "MD5")
@@ -131,6 +160,16 @@ val ByteArray.sha1 get() = hash(this, "SHA-1")
  *  Create an SHA256 hash of [ByteArray].
  */
 val ByteArray.sha256 get() = hash(this, "SHA-256")
+
+/**
+ * Encodes all bytes from the byte array into a newly-allocated byte array using the Base64 encoding scheme.
+ */
+inline val ByteArray.base64: ByteArray get() = Base64.getEncoder().encode(this)
+
+/**
+ * Decodes base64 byte array.
+ */
+inline val ByteArray.base64Decode: ByteArray get() = Base64.getDecoder().decode(this)
 
 /**
  * Get the root cause by walks through the exception chain to the last element,
@@ -235,10 +274,20 @@ fun Path.delete() {
 }
 
 /**
+ * Exits the system with [msg]
+ */
+fun exit(status: Int, msg: (() -> String)? = null) {
+    if (msg != null) {
+        println(msg())
+    }
+    System.exit(status)
+}
+
+/**
  * Returns the jar [Manifest] of the class. Returns [null] if the class
  * is not bundled in a jar (Classes in an unpacked class hierarchy).
  */
-val <T : Any> KClass<T>.jarManifest: Manifest? get() {
+inline val <T : Any> KClass<T>.jarManifest: Manifest? get() {
     val res = java.getResource("${java.simpleName}.class")
     val conn = res.openConnection()
     return if (conn is JarURLConnection) conn.manifest else null
