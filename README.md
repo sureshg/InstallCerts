@@ -1,4 +1,4 @@
-# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.1-green.svg) ](https://github.com/sureshg/InstallCerts/releases/download/1.0.1/installcerts)
+# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.2-green.svg) ](https://github.com/sureshg/InstallCerts/releases/download/1.0.2/installcerts)
 
 `InstallCerts` is a simple cli tool to create [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) trustStore by retrieving server's TLS certificates.
 You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) and java [Keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html) commands, but `InstallCerts` makes it fully automated using a single command.
@@ -7,7 +7,7 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
 
 * Binary
 
-   [Download (v1.0.1)](https://github.com/sureshg/InstallCerts/releases/download/1.0.1/installcerts)
+   [Download (v1.0.2)](https://github.com/sureshg/InstallCerts/releases/download/1.0.2/installcerts)
 
    > After download, make sure to set the execute permission (`chmod +x installcerts`). Windows users can run the executable jar.
 
@@ -20,7 +20,7 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
     ```
     > The binary would be located at `build/libs/installcerts`
     
-    Inorder to build a new version, change `appVersion` in the [gradle properties](https://github.com/sureshg/InstallCerts/blob/master/gradle.properties) or pass it to `./gradlew -PappVersion=1.0.1`
+    Inorder to build a new version, change `appVersion` in the [gradle properties](https://github.com/sureshg/InstallCerts/blob/master/gradle.properties) or pass it to `./gradlew -PappVersion=1.0.2`
 
 ### Usage
 
@@ -163,7 +163,7 @@ $ installcerts -h
   * Debug TLS Session (`-d`)   
 
     ```ruby
-        $ installcerts https://rsa2048.badssl.com/ -d
+        $ installcerts https://rsa2048.badssl.com/ -a -d
     
           ➤ Enabling TLS debug tracing...
           Loading default ca truststore...
@@ -185,20 +185,15 @@ $ installcerts -h
           0040: 0E 00 33 00 32 C0 2B C0   2F 00 9C C0 2D C0 31 00  ..3.2.+./...-.1.
           ...
           
-          Cached client session: [Session-1, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256]
-          [read] MD5 and SHA1 hashes:  len = 16
-          0000: 14 00 00 0C 98 CD 71 4B   98 1E 07 A0 3B 82 B1 84  ......qK....;...
-          main, called close()
-          main, called closeInternal(true)
           main, SEND TLSv1.2 ALERT:  warning, description = close_notify
           Padded plaintext before ENCRYPTION:  len = 2
           0000: 01 00                                              ..
           main, WRITE: TLSv1.2 Alert, length = 26
           [Raw write]: length = 31
-          0000: 15 03 03 00 1A 00 00 00   00 00 00 00 01 71 F1 91  .............q..
-          0010: C5 97 8D 78 EC FA 7D B4   C5 91 69 6C BD 99 78     ...x......il..x
+          0000: 15 03 03 00 1A 00 00 00   00 00 00 00 01 18 B9 59  ...............Y
+          0010: 96 9B 04 93 CB 8A 4C EC   D8 B1 9B 0C 43 76 E3     ......L.....Cv.
           main, called closeSocket(true)
-          🍺  No errors, certificate is already trusted!
+          ...
        ```    
          
   * Some useful Keytool commands

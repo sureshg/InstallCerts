@@ -17,8 +17,8 @@ buildscript {
     var wrapperVersion: String by extra
 
     javaVersion = JavaVersion.VERSION_1_8
-    kotlinVersion = "1.1.2-eap-44"
-    wrapperVersion = "3.5-20170331195952+0000"
+    kotlinVersion = "1.1.2-eap-77"
+    wrapperVersion = "4.0-20170421144052+0000"
     kotlinEAPRepo = "https://dl.bintray.com/kotlin/kotlin-eap-1.1"
 
     repositories {
@@ -91,8 +91,8 @@ tasks.withType<Jar> {
         attributes(mapOf("Built-By" to appAuthor,
                 "Built-Date" to buildDateTime,
                 IMPLEMENTATION_VERSION.toString() to appVersion,
-                IMPLEMENTATION_TITLE.toString() to application().applicationName,
-                MAIN_CLASS.toString() to application().mainClassName))
+                IMPLEMENTATION_TITLE.toString() to application.applicationName,
+                MAIN_CLASS.toString() to application.mainClassName))
     }
 }
 
@@ -101,13 +101,15 @@ tasks.withType<Jar> {
  */
 task<FatCapsule>("makeExecutable") {
     val minJavaVer = javaVersion.toString()
-    archiveName = application().applicationName
+    val appName = application.applicationName
+    val appMainClass = application.mainClassName
+    archiveName = appName
     reallyExecutable = ReallyExecutableSpec().regular()
     capsuleManifest = CapsuleManifest().apply {
         premainClass = "Capsule"
         mainClass = "Capsule"
-        applicationName = application().applicationName
-        applicationClass = application().mainClassName
+        applicationName = appName
+        applicationClass = appMainClass
         applicationVersion = version
         jvmArgs = listOf("-client")
         minJavaVersion = minJavaVer
