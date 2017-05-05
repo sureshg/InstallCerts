@@ -101,7 +101,6 @@ data class GithubRepo(val proto: String,
         else -> "$url/releases/tag/$tag"
     }
 
-
     /**
      * Returns README.md url for the [branch].
      */

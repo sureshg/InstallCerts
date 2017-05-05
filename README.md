@@ -1,4 +1,4 @@
-# 🏺 Install Certs [ ![version][version-svg] ][download]
+# 🏺 Install Certs [ ![version][version-svg] ][download] [ ![api-doc][doc-svg] ][apidoc-url]
 
 `InstallCerts` is a simple cli tool to create [PKCS12][pkcs-wiki] trustStore by retrieving server's TLS certificates.
 You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytool-doc] commands, but `InstallCerts` makes it fully automated using a single command.
@@ -236,7 +236,9 @@ OPTIONS
 ----------
 <sup>**</sup>Require [Java 8 or later][java-download]
 
-[version-svg]: https://img.shields.io/badge/installcerts-1.0.3-green.svg
+[version-svg]: https://img.shields.io/badge/installcerts-1.0.3-green.svg?style=flat-square
+[doc-svg]: https://img.shields.io/badge/apidoc-1.0.3-ff69b4.svg?style=flat-square
+[apidoc-url]: https://sureshg.github.io/InstallCerts/
 [download]: https://github.com/sureshg/InstallCerts/releases/download/1.0.3/installcerts
 [java-download]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [github-token]: https://github.com/settings/tokens
