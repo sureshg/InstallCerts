@@ -3,6 +3,7 @@ package io.sureshg.crypto
 import io.sureshg.cmd.Install
 import io.sureshg.extn.*
 import java.io.File
+import java.net.InetSocketAddress
 import java.security.KeyStore
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLException
@@ -65,7 +66,13 @@ object InstallCerts {
             if (validateCerts(host, port, keyStore, args).valid) {
                 println("Certificate is trusted. Saving the trustore...\n".cyan)
                 keyStore.toPKCS12().store(keystoreFile.outputStream(), storePasswd.toCharArray())
-                exit(0) { "PKCS12 truststore saved to ${keystoreFile.absolutePath.bold}".done }
+                exit(0) {
+                    """|${"PKCS12 truststore saved to ${keystoreFile.absolutePath.bold}".done}
+                       |
+                       |To lists entries in the keystore, run
+                       |${"keytool -list -keystore $keystoreFile --storetype pkcs12".yellow}
+                    """.trimMargin()
+                }
             }
         }
 
@@ -85,12 +92,13 @@ object InstallCerts {
         val validateChain = !args.all
         val tm = keystore.defaultTrustManager.saving(validateChain)
         val sslCtx = getSSLContext("TLS", trustManagers = arrayOf(tm))
-        val socket = sslCtx.socketFactory.createSocket(host, port) as SSLSocket
+        val socket = sslCtx.socketFactory.createSocket() as SSLSocket
 
         try {
             println("\nStarting SSL handshake...".cyan)
             socket.use {
-                it.soTimeout = 5_000
+                it.soTimeout = args.timeout
+                it.connect(InetSocketAddress(host, port), args.timeout)
                 it.startHandshake()
             }
             return Result(true, tm.chain, socket.session?.info())

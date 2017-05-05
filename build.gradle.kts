@@ -1,14 +1,14 @@
+import co.riiid.gradle.ReleaseTask
 import org.gradle.api.tasks.wrapper.Wrapper
-import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import us.kirchmeier.capsule.manifest.CapsuleManifest
 import us.kirchmeier.capsule.spec.ReallyExecutableSpec
 import us.kirchmeier.capsule.task.*
 import org.gradle.jvm.tasks.Jar
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
+import org.jetbrains.dokka.gradle.*
 import java.util.jar.Attributes.Name.*
+import term.*
 
 buildscript {
     var javaVersion: JavaVersion by extra
@@ -17,12 +17,16 @@ buildscript {
     var wrapperVersion: String by extra
 
     javaVersion = JavaVersion.VERSION_1_8
-    kotlinVersion = "1.1.2-eap-77"
-    wrapperVersion = "4.0-20170421144052+0000"
-    kotlinEAPRepo = "https://dl.bintray.com/kotlin/kotlin-eap-1.1"
+    kotlinVersion = "kotlin.version".sysProp
+    wrapperVersion = "wrapper.version".sysProp
+    kotlinEAPRepo = "kotlin.eap.repo".sysProp
 
     repositories {
         gradleScriptKotlin()
+    }
+
+    dependencies {
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.13")
     }
 }
 
@@ -32,14 +36,20 @@ val javaVersion: JavaVersion by extra
 val kotlinVersion: String by extra
 val kotlinEAPRepo: String by extra
 val wrapperVersion: String by extra
-printHeader()
+printHeader(appVersion)
 
 plugins {
     java
     application
     idea
-    id("org.jetbrains.kotlin.jvm") version "1.1.1"
+    val ktPlugin = "kotlin.version".sysProp
+    id("org.jetbrains.kotlin.jvm") version ktPlugin
     id("us.kirchmeier.capsule") version "1.0.2"
+    id("co.riiid.gradle") version "0.4.2"
+}
+
+apply {
+    plugin<DokkaPlugin>()
 }
 
 base {
@@ -61,7 +71,7 @@ java {
  */
 application {
     applicationName = rootProject.name
-    mainClassName = "io.sureshg.MainKt"
+    mainClassName = "${project.group}.MainKt"
 }
 
 /**
@@ -88,10 +98,17 @@ dependencies {
  */
 tasks.withType<Jar> {
     manifest {
-        attributes(mapOf("Built-By" to appAuthor,
+        attributes(mapOf(
+                "Built-By" to appAuthor,
                 "Built-Date" to buildDateTime,
+                "Build-Jdk" to "java.version".sysProp,
+                "Build-Target" to javaVersion,
+                "Build-OS" to "${"os.name".sysProp} ${"os.version".sysProp}",
+                "Kotlin-Version" to kotlinVersion,
+                "Created-By" to "Gradle ${gradle.gradleVersion}",
                 IMPLEMENTATION_VERSION.toString() to appVersion,
                 IMPLEMENTATION_TITLE.toString() to application.applicationName,
+                IMPLEMENTATION_VENDOR.toString() to project.group,
                 MAIN_CLASS.toString() to application.mainClassName))
     }
 }
@@ -118,8 +135,70 @@ task<FatCapsule>("makeExecutable") {
     dependsOn("clean")
 
     doLast {
-        println("Executable File: $archivePath")
+        archivePath.setExecutable(true)
+        println("Executable File: ${archivePath.absolutePath.bold}".done)
     }
+}
+
+/**
+ * Generate doc using dokka.
+ */
+tasks.withType<DokkaTask> {
+    val src = "src/main"
+    val out = "$projectDir/docs"
+    val format = DokkaFormat.Html
+    doFirst {
+        println("Cleaning doc directory ${out.bold}...".cyan)
+        project.delete(out)
+    }
+
+    moduleName = ""
+    sourceDirs = files(src)
+    outputFormat = format.type
+    outputDirectory = out
+    jdkVersion = javaVersion.majorVersion.toInt()
+    includes = listOf("README.md", "CHANGELOG.md")
+    val mapping = LinkMapping().apply {
+        dir = src
+        url = "${githubRepo.url}/blob/master/$src"
+        suffix = "#L"
+    }
+    linkMappings = arrayListOf(mapping)
+    description = "Generate docs in ${format.desc} format."
+
+    doLast {
+        println("Generated ${format.desc} format docs to ${outputDirectory.bold}".done)
+    }
+}
+
+/**
+ * Set Github token and publish.
+ */
+github {
+    val tag = version.toString()
+    baseUrl = "https://api.github.com"
+    owner = githubRepo.user
+    repo = githubRepo.repo
+    tagName = tag
+    targetCommitish = "master"
+    name = "${application.applicationName} v$version"
+    val changelog = githubRepo.changelogUrl(branch = targetCommitish, tag = tag)
+    body = "$name release. Check [CHANGELOG.md]($changelog) for details."
+    setAssets(File(buildDir, "libs/${application.applicationName}").path)
+}
+
+tasks.withType<ReleaseTask> {
+    doFirst {
+        github.token = getEnv("GITHUB_TOKEN")
+    }
+
+    doLast {
+        println("Published github release ${github.name}.".done)
+        println("Release URL: ${githubRepo.releaseUrl().bold}")
+    }
+
+    description = "Publish Github release ${github.name}"
+    dependsOn("makeExecutable")
 }
 
 /**
@@ -134,22 +213,7 @@ task<Wrapper>("wrapper") {
     }
 }
 
-
 /**
  * Set default task
  */
 defaultTasks("makeExecutable")
-
-fun printHeader() {
-    val header = """
-                 ===============================
-                  Building Install Certs v$appVersion
-                 ===============================
-                 """.trimIndent()
-    println(header)
-    println()
-}
-
-val buildDateTime get() = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a z"))
-
-fun getGskURL(version: String, type: DistributionType = ALL) = "https://repo.gradle.org/gradle/dist-snapshots/gradle-script-kotlin-$version-${type.name.toLowerCase()}.zip"

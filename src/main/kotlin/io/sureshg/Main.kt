@@ -5,7 +5,7 @@ import io.sureshg.cmd.Install
 import io.sureshg.extn.*
 
 /**
- * Main method that runs [InstallCerts]
+ * Main method that runs InstallCerts commands.
  *
  * @author  Suresh
  */

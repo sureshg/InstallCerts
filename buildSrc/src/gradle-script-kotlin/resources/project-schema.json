@@ -12,6 +12,7 @@
             "defaultArtifacts": "org.gradle.api.internal.plugins.DefaultArtifactPublicationSet",
             "reporting": "org.gradle.api.reporting.ReportingExtension",
             "capsule": "us.kirchmeier.capsule.CapsuleGradlePlugin.CapsuleGradleExtension",
+            "github": "co.riiid.gradle.GithubExtension",
             "distributions": "org.gradle.api.distribution.DistributionContainer",
             "idea": "org.gradle.plugins.ide.idea.model.IdeaModel"
         }

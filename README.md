@@ -1,13 +1,13 @@
-# 🏺 Install Certs [ ![version](https://img.shields.io/badge/installcerts-1.0.2-green.svg) ](https://github.com/sureshg/InstallCerts/releases/download/1.0.2/installcerts)
+# 🏺 Install Certs [ ![version][version-svg] ][download]
 
-`InstallCerts` is a simple cli tool to create [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) trustStore by retrieving server's TLS certificates.
-You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) and java [Keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html) commands, but `InstallCerts` makes it fully automated using a single command.
+`InstallCerts` is a simple cli tool to create [PKCS12][pkcs-wiki] trustStore by retrieving server's TLS certificates.
+You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytool-doc] commands, but `InstallCerts` makes it fully automated using a single command.
 
 ### Download
 
 * Binary
 
-   [Download (v1.0.2)](https://github.com/sureshg/InstallCerts/releases/download/1.0.2/installcerts)
+   [Download (v1.0.3)][download]
 
    > After download, make sure to set the execute permission (`chmod +x installcerts`). Windows users can run the executable jar.
 
@@ -16,51 +16,66 @@ You can achieve the same using [OpenSSL](https://en.wikipedia.org/wiki/OpenSSL) 
     ```ruby
      $ git clone https://github.com/sureshg/InstallCerts
      $ cd InstallCerts
-     $ ./gradlew
+     $ ./gradlew -q
     ```
     > The binary would be located at `build/libs/installcerts`
     
-    Inorder to build a new version, change `appVersion` in the [gradle properties](https://github.com/sureshg/InstallCerts/blob/master/gradle.properties) or pass it to `./gradlew -PappVersion=1.0.2`
+    Inorder to build a new version, change `appVersion` in the [gradle.properties](gradle.properties) or pass it to `./gradlew -PappVersion=1.0.3`
 
+* Github Releases
+
+    - Generate [Github Access token][github-token] 
+    
+    ```ruby
+     $ export GITHUB_TOKEN=<token>
+     $ git clone https://github.com/sureshg/InstallCerts
+     $ cd InstallCerts
+     $ ./gradlew githubRelease -q
+    ```
+    
 ### Usage
 
 ```ruby
 $ installcerts -h
-  NAME
-          installcerts - Creates PKCS12 TrustStore by retrieving server
-          certificates
-  
-  SYNOPSIS
-          installcerts [(-a | --all)] [(-d | --debug)] [(-h | --help)]
-                  [(-p <storePasswd> | --passwd <storePasswd>)] [(-v | --verbose)]
-                  [(-V | --version)] [--] <host>[:port]
-  
-  OPTIONS
-          -a, --all
-              Show all certs and exits.
-  
-          -d, --debug
-              Enable TLS debug tracing.
-  
-          -h, --help
-              Display help information
-  
-          -p <storePasswd>, --passwd <storePasswd>
-              Trust store password. Default is 'changeit'
-  
-          -v, --verbose
-              Verbose mode
-  
-          -V, --version
-              Show version
-  
-          --
-              This option can be used to separate command-line options from the
-              list of argument, (useful when arguments might be mistaken for
-              command-line options
-  
-          <host>[:port]
-              Server URL. Default port is 443
+NAME
+        installcerts - Creates PKCS12 TrustStore by retrieving server
+        certificates
+
+SYNOPSIS
+        installcerts [(-a | --all)] [(-d | --debug)] [(-h | --help)]
+                [(-p <storePasswd> | --passwd <storePasswd>)]
+                [(-t <timeout> | --timeout <timeout>)] [(-v | --verbose)]
+                [(-V | --version)] [--] <host>[:port]
+
+OPTIONS
+        -a, --all
+            Show all certs and exits
+
+        -d, --debug
+            Enable TLS debug tracing
+
+        -h, --help
+            Display help information
+
+        -p <storePasswd>, --passwd <storePasswd>
+            Trust store password. Default is 'changeit'
+
+        -t <timeout>, --timeout <timeout>
+            TLS connect and read timeout (ms). Default is 5000 millis
+
+        -v, --verbose
+            Verbose mode
+
+        -V, --version
+            Show version
+
+        --
+            This option can be used to separate command-line options from the
+            list of argument, (useful when arguments might be mistaken for
+            command-line options
+
+        <host>[:port]
+            Server URL. Default port is 443
 ```
 
 ### Examples
@@ -157,7 +172,10 @@ $ installcerts -h
           Starting SSL handshake...
           Certificate is trusted. Saving the trustore...
           
-          🍺  PKCS12 truststore saved to /Users/sgopal1/code/kotlin/installcerts/self-signed_badssl_com.p12  
+          🍺  PKCS12 truststore saved to /Users/suresh/installcerts/self-signed_badssl_com.p12  
+      
+          To lists entries in the keystore, run
+          keytool -list -keystore self-signed_badssl_com.p12 --storetype pkcs12
        ```
   
   * Debug TLS Session (`-d`)   
@@ -213,8 +231,17 @@ $ installcerts -h
     
 ## Credits
 
- - Got the original idea from this [oracle blog](https://blogs.oracle.com/gc/entry/unable_to_find_valid_certification) post.
+ - Got the original idea from this [oracle blog][installcert-blog] post.
  
 ----------
-<sup>**</sup>Require [Java 8 or later](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+<sup>**</sup>Require [Java 8 or later][java-download]
+
+[version-svg]: https://img.shields.io/badge/installcerts-1.0.3-green.svg
+[download]: https://github.com/sureshg/InstallCerts/releases/download/1.0.3/installcerts
+[java-download]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+[github-token]: https://github.com/settings/tokens
+[installcert-blog]: https://blogs.oracle.com/gc/entry/unable_to_find_valid_certification
+[pkcs-wiki]: https://en.wikipedia.org/wiki/PKCS_12
+[keytool-doc]: https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html
+[openssl-wiki]: https://en.wikipedia.org/wiki/OpenSSL
 

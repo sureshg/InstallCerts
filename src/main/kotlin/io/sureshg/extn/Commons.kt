@@ -11,6 +11,7 @@ import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributes
 import java.security.MessageDigest
 import java.util.*
+import java.util.jar.Attributes
 import java.util.jar.Manifest
 import javax.crypto.Cipher
 import javax.crypto.Mac
@@ -292,3 +293,24 @@ inline val <T : Any> KClass<T>.jarManifest: Manifest? get() {
     val conn = res.openConnection()
     return if (conn is JarURLConnection) conn.manifest else null
 }
+
+/**
+ * Common build info attributes
+ */
+enum class BuildInfo(val attr: String) {
+    Author("Built-By"),
+    Date("Built-Date"),
+    JDK("Build-Jdk"),
+    Target("Build-Target"),
+    OS("Build-OS"),
+    KotlinVersion("Kotlin-Version"),
+    CreatedBy("Created-By"),
+    Title(Attributes.Name.IMPLEMENTATION_TITLE.toString()),
+    Vendor(Attributes.Name.IMPLEMENTATION_VENDOR.toString()),
+    AppVersion(Attributes.Name.IMPLEMENTATION_VERSION.toString())
+}
+
+/**
+ * Returns the [BuildInfo] attribute value from jar manifest [Attributes]
+ */
+fun Attributes?.getVal(name: BuildInfo): String = this?.getValue(name.attr) ?: "N/A"
