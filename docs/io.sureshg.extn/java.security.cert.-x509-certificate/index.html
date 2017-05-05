@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>io.sureshg.extn.java.security.cert.X509Certificate - </title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">io.sureshg.extn</a>&nbsp;/&nbsp;<a href=".">java.security.cert.X509Certificate</a><br/>
+<br/>
+<h3>Extensions for java.security.cert.X509Certificate</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="info.html">info</a></td>
+<td>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">info</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">String</span></code>
+<p>Returns short cert info string suitable for printing.
+For SAN, it returns the GenericName pair -&gt; Filtering
+the string names and indents the list to display properly.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="read-c-r-ls.html">readCRLs</a></td>
+<td>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">readCRLs</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">List</span><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509CRL.html"><span class="identifier">X509CRL</span></a><span class="symbol">&gt;</span></code>
+<p>Returns CRLs described in a X509Certificate's CRLDistributionPoints
+Extension. Only those containing a general name of type URI are read.
+ToDo - Different name should point to same CRL.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="self-signed.html">selfSigned</a></td>
+<td>
+<code><span class="keyword">val </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">selfSigned</span><span class="symbol">: </span><span class="identifier">Boolean</span></code>
+<p>Returns true if the certificate is self-signed, false otherwise.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="signed-by.html">signedBy</a></td>
+<td>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">signedBy</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$signedBy(java.security.cert.X509Certificate, java.security.cert.X509Certificate)/ca">ca</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Boolean</span></code>
+<p>Returns true if the certificate is signed by the given <a href="signed-by.html#io.sureshg.extn$signedBy(java.security.cert.X509Certificate, java.security.cert.X509Certificate)/ca">ca</a> cert., false otherwise.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
