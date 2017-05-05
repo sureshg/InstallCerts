@@ -1,4 +1,4 @@
-# 🏺 Install Certs [ ![version][version-svg] ][download] [ ![api-doc][doc-svg] ][apidoc-url]
+# 🏺 Install Certs [![version][version-svg]][download] [![api-doc][doc-svg]][apidoc-url]
 
 `InstallCerts` is a simple cli tool to create [PKCS12][pkcs-wiki] trustStore by retrieving server's TLS certificates.
 You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytool-doc] commands, but `InstallCerts` makes it fully automated using a single command.
@@ -22,9 +22,9 @@ You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytoo
     
     Inorder to build a new version, change `appVersion` in the [gradle.properties](gradle.properties) or pass it to `./gradlew -PappVersion=1.0.3`
 
-* Github Releases
+* Github Release
 
-    - Generate [Github Access token][github-token] 
+    > In order to publish the binary to Github, generate [Github Access token][github-token] 
     
     ```ruby
      $ export GITHUB_TOKEN=<token>
