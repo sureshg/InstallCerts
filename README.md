@@ -33,7 +33,7 @@ You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytoo
      $ ./gradlew githubRelease -q
     ```
     
-### Usage
+### Usage 
 
 ```ruby
 $ installcerts -h
