@@ -45,7 +45,7 @@ SYNOPSIS
         installcerts [(-a | --all)] [(-d | --debug)] [(-h | --help)]
                 [(-p <storePasswd> | --passwd <storePasswd>)]
                 [(-t <timeout> | --timeout <timeout>)] [(-v | --verbose)]
-                [(-V | --version)] [--] <host>[:port]
+                [(-V | --version)] [(-x | --no-jdk-cacerts)] [--] <host>[:port]
 
 OPTIONS
         -a, --all
@@ -68,6 +68,9 @@ OPTIONS
 
         -V, --version
             Show version
+
+        -x, --no-jdk-cacerts
+            Don't include JDK CA certs in trust store
 
         --
             This option can be used to separate command-line options from the
