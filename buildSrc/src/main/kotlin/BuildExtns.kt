@@ -1,6 +1,7 @@
 import org.gradle.api.Project
 import term.bold
 import term.cyan
+import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -83,6 +84,7 @@ fun Project.getEnv(envVar: String, mask: Boolean = true): String {
     return env
 }
 
+
 /**
  * Represents a  Github repository.
  */
@@ -92,6 +94,13 @@ data class GithubRepo(val proto: String,
                       val repo: String,
                       val branch: String = "master",
                       val url: String = "https://$baseUrl/$user/$repo") {
+
+    /**
+     * Change log date format.
+     */
+    companion object {
+        val clDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    }
 
     /**
      * Returns the github release url for the specific [tag].
@@ -108,9 +117,16 @@ data class GithubRepo(val proto: String,
 
     /**
      *  Returns CHANGELOG.md url for the specified [branch] and [tag].
+     *  Set [keepAChangeLog] to [true] for http://keepachangelog.com/ style.
      */
-    fun changelogUrl(branch: String = this.branch, tag: String? = null): String {
-        val suffix = if (tag != null) "#${tag.replace(".", "")}" else ""
+    fun changelogUrl(branch: String = this.branch, tag: String = "", keepAChangeLog: Boolean = true): String {
+        val suffix = when {
+            tag.isEmpty() -> ""
+            else -> {
+                val anchor = "#${tag.replace(".", "")}"
+                if (keepAChangeLog) "$anchor---$clDate" else anchor
+            }
+        }
         return "$url/blob/$branch/CHANGELOG.md$suffix"
     }
 }

@@ -202,13 +202,19 @@ fun File.toP12KeyStore(storePasswd: CharArray? = null) = toKeyStore(PKCS12.name,
  * Returns the same instance if it's already a [PKCS12] one.
  *
  * @param keyPasswd key entry password.
+ * @param aliasFilter filter regex to include the specific aliases only.
  */
-fun KeyStore.toPKCS12(keyPasswd: CharArray? = null): KeyStore {
+fun KeyStore.toPKCS12(keyPasswd: CharArray? = null, aliasFilter: Regex? = null): KeyStore {
     return if (type.toUpperCase() != PKCS12.name) {
         val ks = KeyStore.getInstance(PKCS12.name)
         ks.load(null, null)
         val keyProtParams = PasswordProtection(keyPasswd)
-        aliases().toList().forEach {
+        aliases().toList().filter {
+            when {
+                aliasFilter != null -> it.matches(aliasFilter)
+                else -> true
+            }
+        }.forEach {
             val entry = if (isKeyEntry(it)) getEntry(it, keyProtParams) else getEntry(it, null)
             ks.setEntry(it, entry, keyProtParams)
         }
@@ -271,12 +277,13 @@ fun getSSLContext(protocol: String = "Default",
  *
  * @param tm delegating [X509TrustManager]
  * @param validate [true] to validate certificate chains. It's enabled by default.
+ * @param chain certificate chain
  *
  * @param tm [X509TrustManager]
  */
-class SavingTrustManager(private val tm: X509TrustManager, val validate: Boolean = true) : X509TrustManager {
-
-    var chain = listOf<X509Certificate>()
+class SavingTrustManager(private val tm: X509TrustManager,
+                         val validate: Boolean = true,
+                         var chain: List<X509Certificate> = listOf<X509Certificate>()) : X509TrustManager {
 
     override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
 

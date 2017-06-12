@@ -58,14 +58,17 @@ object InstallCerts {
         }
 
         println("Server sent ${result.chain.size} certificate(s)...".yellow)
-        result.chain.forEachIndexed { idx, cert ->
+        // Start validating from the root.
+        result.chain.asReversed().forEachIndexed { idx, cert ->
             val alias = "$host-${idx + 1}"
             println("\n${idx + 1}) Adding certificate to keystore using alias ${alias.bold}...")
             println(cert.info().fg256())
             keyStore.setCertificateEntry(alias, cert)
             if (validateCerts(host, port, keyStore, args).valid) {
-                println("Certificate is trusted. Saving the trustore...\n".cyan)
-                keyStore.toPKCS12().store(keystoreFile.outputStream(), storePasswd.toCharArray())
+                val filter = if (args.noJdkCaCerts) "$host-.*".toRegex() else null
+                println("Certificate is trusted. Saving the trust-store...".cyan)
+                println("Default JDK trust store is ${if (args.noJdkCaCerts) "excluded.".yellow else "included.".green}\n")
+                keyStore.toPKCS12(aliasFilter = filter).store(keystoreFile.outputStream(), storePasswd.toCharArray())
                 exit(0) {
                     """|${"PKCS12 truststore saved to ${keystoreFile.absolutePath.bold}".done}
                        |
@@ -76,7 +79,7 @@ object InstallCerts {
             }
         }
 
-        exit(1) { "Something went wrong. Can't validate the cert chain!".err }
+        exit(1) { "Something went wrong. Can't validate the cert chain or require client certs!".err }
     }
 
     /**

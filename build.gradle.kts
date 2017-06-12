@@ -1,3 +1,4 @@
+import BuildInfo.*
 import co.riiid.gradle.ReleaseTask
 import org.gradle.api.tasks.wrapper.Wrapper
 import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL
@@ -7,7 +8,6 @@ import us.kirchmeier.capsule.spec.ReallyExecutableSpec
 import us.kirchmeier.capsule.task.*
 import org.gradle.jvm.tasks.Jar
 import org.jetbrains.dokka.gradle.*
-import java.util.jar.Attributes.Name.*
 import term.*
 
 buildscript {
@@ -20,13 +20,15 @@ buildscript {
     kotlinVersion = "kotlin.version".sysProp
     wrapperVersion = "wrapper.version".sysProp
     kotlinEAPRepo = "kotlin.eap.repo".sysProp
+    val dokkaVersion = "dokka.version".sysProp
 
     repositories {
         gradleScriptKotlin()
+        maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
     }
 
     dependencies {
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.9.13")
+        classpath("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
     }
 }
 
@@ -43,7 +45,9 @@ plugins {
     application
     idea
     val ktPlugin = "kotlin.version".sysProp
-    id("org.jetbrains.kotlin.jvm") version ktPlugin
+    val gradleVersion = "gradle-versions.version".sysProp
+    kotlin("jvm", ktPlugin)
+    id("com.github.ben-manes.versions") version gradleVersion
     id("us.kirchmeier.capsule") version "1.0.2"
     id("co.riiid.gradle") version "0.4.2"
 }
@@ -89,7 +93,7 @@ repositories {
 }
 
 dependencies {
-    compile(kotlinModule("stdlib-jre8", kotlinVersion))
+    compile(kotlin("stdlib-jre8"))
     compile("io.airlift:airline:0.7")
 }
 
@@ -99,17 +103,17 @@ dependencies {
 tasks.withType<Jar> {
     manifest {
         attributes(mapOf(
-                "Built-By" to appAuthor,
-                "Built-Date" to buildDateTime,
-                "Build-Jdk" to "java.version".sysProp,
-                "Build-Target" to javaVersion,
-                "Build-OS" to "${"os.name".sysProp} ${"os.version".sysProp}",
-                "Kotlin-Version" to kotlinVersion,
-                "Created-By" to "Gradle ${gradle.gradleVersion}",
-                IMPLEMENTATION_VERSION.toString() to appVersion,
-                IMPLEMENTATION_TITLE.toString() to application.applicationName,
-                IMPLEMENTATION_VENDOR.toString() to project.group,
-                MAIN_CLASS.toString() to application.mainClassName))
+                Author.attr to appAuthor,
+                Date.attr to buildDateTime,
+                JDK.attr to "java.version".sysProp,
+                BuildTarget.attr to javaVersion,
+                OS.attr to "${"os.name".sysProp} ${"os.version".sysProp}",
+                KotlinVersion.attr to kotlinVersion,
+                CreatedBy.attr to "Gradle ${gradle.gradleVersion}",
+                AppVersion.attr to appVersion,
+                Title.attr to application.applicationName,
+                Vendor.attr to project.group,
+                MainClass.attr to application.mainClassName))
     }
 }
 
@@ -128,7 +132,7 @@ task<FatCapsule>("makeExecutable") {
         applicationName = appName
         applicationClass = appMainClass
         applicationVersion = version
-        jvmArgs = listOf("-client")
+        jvmArgs = listOf("-client", "-Djava.security.egd=file:/dev/./urandom")
         minJavaVersion = minJavaVer
     }
     description = "Create $archiveName executable."
@@ -136,26 +140,27 @@ task<FatCapsule>("makeExecutable") {
 
     doLast {
         archivePath.setExecutable(true)
-        println("Executable File: ${archivePath.absolutePath.bold}".done)
+        val size = archivePath.length().toBinaryPrefixString()
+        println("Executable File: ${archivePath.absolutePath.bold} (${size.bold})".done)
     }
 }
 
-/**
- * Generate doc using dokka.
- */
 tasks.withType<DokkaTask> {
     val src = "src/main"
     val out = "$projectDir/docs"
     val format = DokkaFormat.Html
     doFirst {
         println("Cleaning doc directory ${out.bold}...".cyan)
-        project.delete(out)
+        project.delete(fileTree(out) {
+            exclude("logos/**", "templates/**")
+        })
     }
 
     moduleName = ""
     sourceDirs = files(src)
     outputFormat = format.type
     outputDirectory = out
+    skipEmptyPackages = true
     jdkVersion = javaVersion.majorVersion.toInt()
     includes = listOf("README.md", "CHANGELOG.md")
     val mapping = LinkMapping().apply {
@@ -164,7 +169,7 @@ tasks.withType<DokkaTask> {
         suffix = "#L"
     }
     linkMappings = arrayListOf(mapping)
-    description = "Generate docs in ${format.desc} format."
+    description = "Generate ${project.name} v$appVersion docs in ${format.desc} format."
 
     doLast {
         println("Generated ${format.desc} format docs to ${outputDirectory.bold}".done)

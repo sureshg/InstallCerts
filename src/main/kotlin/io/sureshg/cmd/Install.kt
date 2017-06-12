@@ -39,6 +39,9 @@ class Install {
     @Option(name = arrayOf("-d", "--debug"), description = "Enable TLS debug tracing")
     var debug = false
 
+    @Option(name = arrayOf("-x", "--no-jdk-cacerts"), description = "Don't include JDK CA certs in trust store")
+    var noJdkCaCerts = false
+
     @Option(name = arrayOf("-V", "--version"), description = "Show version")
     var showVersion = false
 
@@ -68,10 +71,10 @@ class Install {
         when {
             showVersion -> {
                 val version = """|InstallCerts version : ${buildAttrs.getVal(AppVersion)}
-                                 |JDK Version          : ${buildAttrs.getVal(JDK)}
-                                 |Kotlin Version       : ${buildAttrs.getVal(KotlinVersion)}
-                                 |Build Date           : ${buildAttrs.getVal(Date)}
-                              """.trimMargin()
+                                        |JDK Version          : ${buildAttrs.getVal(JDK)}
+                                        |Kotlin Version       : ${buildAttrs.getVal(KotlinVersion)}
+                                        |Build Date           : ${buildAttrs.getVal(Date)}
+                                    """.trimMargin()
                 println(version.bold.cyan)
                 System.exit(0)
             }
