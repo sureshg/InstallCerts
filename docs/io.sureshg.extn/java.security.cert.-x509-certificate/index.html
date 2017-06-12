@@ -12,9 +12,10 @@
 <tbody>
 <tr>
 <td>
-<a href="info.html">info</a></td>
+<p><a href="info.html">info</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">info</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">String</span></code>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">info</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
 <p>Returns short cert info string suitable for printing.
 For SAN, it returns the GenericName pair -&gt; Filtering
 the string names and indents the list to display properly.</p>
@@ -22,9 +23,10 @@ the string names and indents the list to display properly.</p>
 </tr>
 <tr>
 <td>
-<a href="read-c-r-ls.html">readCRLs</a></td>
+<p><a href="read-c-r-ls.html">readCRLs</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">readCRLs</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">List</span><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509CRL.html"><span class="identifier">X509CRL</span></a><span class="symbol">&gt;</span></code>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">readCRLs</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509CRL.html"><span class="identifier">X509CRL</span></a><span class="symbol">&gt;</span></code>
 <p>Returns CRLs described in a X509Certificate's CRLDistributionPoints
 Extension. Only those containing a general name of type URI are read.
 ToDo - Different name should point to same CRL.</p>
@@ -32,17 +34,19 @@ ToDo - Different name should point to same CRL.</p>
 </tr>
 <tr>
 <td>
-<a href="self-signed.html">selfSigned</a></td>
+<p><a href="self-signed.html">selfSigned</a></p>
+</td>
 <td>
-<code><span class="keyword">val </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">selfSigned</span><span class="symbol">: </span><span class="identifier">Boolean</span></code>
+<code><span class="keyword">val </span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">selfSigned</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
 <p>Returns true if the certificate is self-signed, false otherwise.</p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="signed-by.html">signedBy</a></td>
+<p><a href="signed-by.html">signedBy</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">signedBy</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$signedBy(java.security.cert.X509Certificate, java.security.cert.X509Certificate)/ca">ca</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Boolean</span></code>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">.</span><span class="identifier">signedBy</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$signedBy(java.security.cert.X509Certificate, java.security.cert.X509Certificate)/ca">ca</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
 <p>Returns true if the certificate is signed by the given <a href="signed-by.html#io.sureshg.extn$signedBy(java.security.cert.X509Certificate, java.security.cert.X509Certificate)/ca">ca</a> cert., false otherwise.</p>
 </td>
 </tr>

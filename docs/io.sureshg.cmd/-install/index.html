@@ -8,7 +8,7 @@
 <a href="../index.html">io.sureshg.cmd</a>&nbsp;/&nbsp;<a href=".">Install</a><br/>
 <br/>
 <h1>Install</h1>
-<code><span class="identifier">@Command</span><span class="symbol">(</span>"installcerts"<span class="symbol">, </span>"Creates PKCS12 TrustStore by retrieving server certificates"<span class="symbol">)</span> <span class="keyword">class </span><span class="identifier">Install</span></code> <a href="https://github.com/sureshg/InstallCerts/blob/master/src/main/kotlin/io/sureshg/cmd/Install.kt#L19">(source)</a>
+<code><span class="identifier">@Command</span><span class="symbol">(</span>"installcerts"<span class="symbol">, </span>"Creates PKCS12 TrustStore by retrieving server certificates"<span class="symbol">)</span> <span class="keyword">class </span><span class="identifier">Install</span></code>
 <p>Install command.</p>
 <p><strong>Author</strong><br/>
 Suresh</p>
@@ -17,7 +17,8 @@ Suresh</p>
 <tbody>
 <tr>
 <td>
-<a href="-init-.html">&lt;init&gt;</a></td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
 <td>
 <code><span class="identifier">Install</span><span class="symbol">(</span><span class="symbol">)</span></code>
 <p>Install command.</p>
@@ -30,67 +31,84 @@ Suresh</p>
 <tbody>
 <tr>
 <td>
-<a href="all.html">all</a></td>
+<p><a href="all.html">all</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">all</span><span class="symbol">: </span><span class="identifier">Boolean</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">all</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="build-attrs.html">buildAttrs</a></td>
+<p><a href="build-attrs.html">buildAttrs</a></p>
+</td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">buildAttrs</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/util/jar/Attributes.html"><span class="identifier">Attributes</span></a><span class="symbol">?</span></code>
+<code><span class="keyword">val </span><span class="identifier">buildAttrs</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/8/docs/api/java/util/jar/Attributes.html"><span class="identifier">Attributes</span></a><span class="symbol">?</span></code>
 <p>Build info attributes</p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="debug.html">debug</a></td>
+<p><a href="debug.html">debug</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">debug</span><span class="symbol">: </span><span class="identifier">Boolean</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">debug</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="help-option.html">helpOption</a></td>
+<p><a href="help-option.html">helpOption</a></p>
+</td>
 <td>
 <code><span class="keyword">lateinit</span> <span class="keyword">var </span><span class="identifier">helpOption</span><span class="symbol">: </span><span class="identifier">HelpOption</span></code></td>
 </tr>
 <tr>
 <td>
-<a href="host-port.html">hostPort</a></td>
+<p><a href="host-port.html">hostPort</a></p>
+</td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">hostPort</span><span class="symbol">: </span><span class="identifier">Pair</span><span class="symbol">&lt;</span><span class="identifier">String</span><span class="symbol">,</span>&nbsp;<span class="identifier">Int</span><span class="symbol">&gt;</span></code>
+<code><span class="keyword">val </span><span class="identifier">hostPort</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/index.html"><span class="identifier">Pair</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
 <p>Split the host and port from the <a href="uri.html">uri</a></p>
 </td>
 </tr>
 <tr>
 <td>
-<a href="show-version.html">showVersion</a></td>
+<p><a href="no-jdk-ca-certs.html">noJdkCaCerts</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">showVersion</span><span class="symbol">: </span><span class="identifier">Boolean</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">noJdkCaCerts</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="store-passwd.html">storePasswd</a></td>
+<p><a href="show-version.html">showVersion</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">storePasswd</span><span class="symbol">: </span><span class="identifier">String</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">showVersion</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="timeout.html">timeout</a></td>
+<p><a href="store-passwd.html">storePasswd</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">timeout</span><span class="symbol">: </span><span class="identifier">Int</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">storePasswd</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="uri.html">uri</a></td>
+<p><a href="timeout.html">timeout</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">uri</span><span class="symbol">: </span><span class="identifier">String</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">timeout</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="verbose.html">verbose</a></td>
+<p><a href="uri.html">uri</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">verbose</span><span class="symbol">: </span><span class="identifier">Boolean</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">uri</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="verbose.html">verbose</a></p>
+</td>
+<td>
+<code><span class="keyword">var </span><span class="identifier">verbose</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 </tbody>
 </table>
@@ -99,9 +117,10 @@ Suresh</p>
 <tbody>
 <tr>
 <td>
-<a href="run.html">run</a></td>
+<p><a href="run.html">run</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><span class="identifier">run</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code>
+<code><span class="keyword">fun </span><span class="identifier">run</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
 <p>Executes the command</p>
 </td>
 </tr>
@@ -112,10 +131,11 @@ Suresh</p>
 <tbody>
 <tr>
 <td>
-<a href="../../io.sureshg.extn/kotlin.-any/p.html">p</a></td>
+<p><a href="../../io.sureshg.extn/kotlin.-any/p.html">p</a></p>
+</td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">Any</span><span class="symbol">?</span><span class="symbol">.</span><span class="identifier">p</span><span class="symbol">: </span><span class="identifier">Unit</span></code>
-<p>Prints the <a href="#">Any.toString</a> to console.</p>
+<code><span class="keyword">val </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">.</span><span class="identifier">p</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Prints the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/to-string.html">Any.toString</a> to console.</p>
 </td>
 </tr>
 </tbody>

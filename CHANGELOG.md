@@ -1,4 +1,8 @@
-### 1.0.4
+## 1.0.4
+
+- Support to exclude the default JDK cacerts.
+- Many bug fixes
+- Dependency upgrades.
 
 ## 1.0.3
 

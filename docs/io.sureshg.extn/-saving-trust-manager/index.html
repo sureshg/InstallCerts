@@ -8,25 +8,24 @@
 <a href="../index.html">io.sureshg.extn</a>&nbsp;/&nbsp;<a href=".">SavingTrustManager</a><br/>
 <br/>
 <h1>SavingTrustManager</h1>
-<code><span class="keyword">class </span><span class="identifier">SavingTrustManager</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html"><span class="identifier">X509TrustManager</span></a></code> <a href="https://github.com/sureshg/InstallCerts/blob/master/src/main/kotlin/io/sureshg/extn/Certs.kt#L277">(source)</a>
-<p>An <a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a> to save the server/client cert chains.</p>
+<code><span class="keyword">class </span><span class="identifier">SavingTrustManager</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html"><span class="identifier">X509TrustManager</span></a></code>
+<p>An <a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a> to save the server/client cert chains.</p>
 <h3>Parameters</h3>
-
-<p><a name="tm"></a>
-<code>tm</code> - delegating <a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a>
-<p><a name="validate"></a>
-<code>validate</code> - <a href="#">true</a> to validate certificate chains. It's enabled by default.
-<p><a name="tm"></a>
-<code>tm</code> - <a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a>
+<a name="tm"></a>
+<code>tm</code> - delegating <a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a><a name="validate"></a>
+<code>validate</code> - <a href="#">true</a> to validate certificate chains. It's enabled by default.<a name="chain"></a>
+<code>chain</code> - certificate chain<a name="tm"></a>
+<code>tm</code> - <a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a>
 <h3>Constructors</h3>
 <table>
 <tbody>
 <tr>
 <td>
-<a href="-init-.html">&lt;init&gt;</a></td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
 <td>
-<code><span class="identifier">SavingTrustManager</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$<init>(javax.net.ssl.X509TrustManager, kotlin.Boolean)/tm">tm</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html"><span class="identifier">X509TrustManager</span></a><span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$<init>(javax.net.ssl.X509TrustManager, kotlin.Boolean)/validate">validate</span><span class="symbol">:</span>&nbsp;<span class="identifier">Boolean</span>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span></code>
-<p>An <a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a> to save the server/client cert chains.</p>
+<code><span class="identifier">SavingTrustManager</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$<init>(javax.net.ssl.X509TrustManager, kotlin.Boolean, kotlin.collections.List((java.security.cert.X509Certificate)))/tm">tm</span><span class="symbol">:</span>&nbsp;<a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html"><span class="identifier">X509TrustManager</span></a><span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$<init>(javax.net.ssl.X509TrustManager, kotlin.Boolean, kotlin.collections.List((java.security.cert.X509Certificate)))/validate">validate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$<init>(javax.net.ssl.X509TrustManager, kotlin.Boolean, kotlin.collections.List((java.security.cert.X509Certificate)))/chain">chain</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;listOf&lt;X509Certificate&gt;()<span class="symbol">)</span></code>
+<p>An <a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html">X509TrustManager</a> to save the server/client cert chains.</p>
 </td>
 </tr>
 </tbody>
@@ -36,15 +35,17 @@
 <tbody>
 <tr>
 <td>
-<a href="chain.html">chain</a></td>
+<p><a href="chain.html">chain</a></p>
+</td>
 <td>
-<code><span class="keyword">var </span><span class="identifier">chain</span><span class="symbol">: </span><span class="identifier">List</span><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">var </span><span class="identifier">chain</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span></code></td>
 </tr>
 <tr>
 <td>
-<a href="validate.html">validate</a></td>
+<p><a href="validate.html">validate</a></p>
+</td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">validate</span><span class="symbol">: </span><span class="identifier">Boolean</span></code></td>
+<code><span class="keyword">val </span><span class="identifier">validate</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
 </tr>
 </tbody>
 </table>
@@ -53,21 +54,24 @@
 <tbody>
 <tr>
 <td>
-<a href="check-client-trusted.html">checkClientTrusted</a></td>
+<p><a href="check-client-trusted.html">checkClientTrusted</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><span class="identifier">checkClientTrusted</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkClientTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/chain">chain</span><span class="symbol">:</span>&nbsp;<span class="identifier">Array</span><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkClientTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/authType">authType</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code></td>
+<code><span class="keyword">fun </span><span class="identifier">checkClientTrusted</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkClientTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/chain">chain</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkClientTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/authType">authType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="check-server-trusted.html">checkServerTrusted</a></td>
+<p><a href="check-server-trusted.html">checkServerTrusted</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><span class="identifier">checkServerTrusted</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkServerTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/chain">chain</span><span class="symbol">:</span>&nbsp;<span class="identifier">Array</span><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkServerTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/authType">authType</span><span class="symbol">:</span>&nbsp;<span class="identifier">String</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Unit</span></code></td>
+<code><span class="keyword">fun </span><span class="identifier">checkServerTrusted</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkServerTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/chain">chain</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="io.sureshg.extn.SavingTrustManager$checkServerTrusted(kotlin.Array((java.security.cert.X509Certificate)), kotlin.String)/authType">authType</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
 </tr>
 <tr>
 <td>
-<a href="get-accepted-issuers.html">getAcceptedIssuers</a></td>
+<p><a href="get-accepted-issuers.html">getAcceptedIssuers</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><span class="identifier">getAcceptedIssuers</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Array</span><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span></code></td>
+<code><span class="keyword">fun </span><span class="identifier">getAcceptedIssuers</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/cert/X509Certificate.html"><span class="identifier">X509Certificate</span></a><span class="symbol">&gt;</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -76,10 +80,11 @@
 <tbody>
 <tr>
 <td>
-<a href="../kotlin.-any/p.html">p</a></td>
+<p><a href="../kotlin.-any/p.html">p</a></p>
+</td>
 <td>
-<code><span class="keyword">val </span><span class="identifier">Any</span><span class="symbol">?</span><span class="symbol">.</span><span class="identifier">p</span><span class="symbol">: </span><span class="identifier">Unit</span></code>
-<p>Prints the <a href="#">Any.toString</a> to console.</p>
+<code><span class="keyword">val </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">.</span><span class="identifier">p</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Prints the <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/to-string.html">Any.toString</a> to console.</p>
 </td>
 </tr>
 </tbody>
@@ -89,9 +94,10 @@
 <tbody>
 <tr>
 <td>
-<a href="../javax.net.ssl.-x509-trust-manager/saving.html">saving</a></td>
+<p><a href="../javax.net.ssl.-x509-trust-manager/saving.html">saving</a></p>
+</td>
 <td>
-<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/javax/net/ssl/X509TrustManager.html"><span class="identifier">X509TrustManager</span></a><span class="symbol">.</span><span class="identifier">saving</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$saving(javax.net.ssl.X509TrustManager, kotlin.Boolean)/validate">validate</span><span class="symbol">:</span>&nbsp;<span class="identifier">Boolean</span>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">SavingTrustManager</span></code>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/8/docs/api/javax/net/ssl/X509TrustManager.html"><span class="identifier">X509TrustManager</span></a><span class="symbol">.</span><span class="identifier">saving</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$saving(javax.net.ssl.X509TrustManager, kotlin.Boolean)/validate">validate</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>&nbsp;<span class="symbol">=</span>&nbsp;true<span class="symbol">)</span><span class="symbol">: </span><span class="identifier">SavingTrustManager</span></code>
 <p>Returns a SavingTrustManager for this trust manager.</p>
 </td>
 </tr>

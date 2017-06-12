@@ -8,13 +8,13 @@
 <a href="../index.html">io.sureshg.extn</a>&nbsp;/&nbsp;<a href="index.html">java.security.KeyStore</a>&nbsp;/&nbsp;<a href=".">toPKCS12</a><br/>
 <br/>
 <h1>toPKCS12</h1>
-<a name="io.sureshg.extn$toPKCS12(java.security.KeyStore, kotlin.CharArray)"></a>
-<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/KeyStore.html"><span class="identifier">KeyStore</span></a><span class="symbol">.</span><span class="identifier">toPKCS12</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$toPKCS12(java.security.KeyStore, kotlin.CharArray)/keyPasswd">keyPasswd</span><span class="symbol">:</span>&nbsp;<span class="identifier">CharArray</span><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/6/docs/api/java/security/KeyStore.html"><span class="identifier">KeyStore</span></a></code> <a href="https://github.com/sureshg/InstallCerts/blob/master/src/main/kotlin/io/sureshg/extn/Certs.kt#L206">(source)</a>
+<a name="io.sureshg.extn$toPKCS12(java.security.KeyStore, kotlin.CharArray, kotlin.text.Regex)"></a>
+<code><span class="keyword">fun </span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/KeyStore.html"><span class="identifier">KeyStore</span></a><span class="symbol">.</span><span class="identifier">toPKCS12</span><span class="symbol">(</span><span class="identifier" id="io.sureshg.extn$toPKCS12(java.security.KeyStore, kotlin.CharArray, kotlin.text.Regex)/keyPasswd">keyPasswd</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-array/index.html"><span class="identifier">CharArray</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">, </span><span class="identifier" id="io.sureshg.extn$toPKCS12(java.security.KeyStore, kotlin.CharArray, kotlin.text.Regex)/aliasFilter">aliasFilter</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.text/-regex/index.html"><span class="identifier">Regex</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="http://docs.oracle.com/javase/8/docs/api/java/security/KeyStore.html"><span class="identifier">KeyStore</span></a></code>
 <p>Returns a new <a href="../-key-store-type/-p-k-c-s12.html">PKCS12</a> keystore using this keystore entries.
 Returns the same instance if it's already a <a href="../-key-store-type/-p-k-c-s12.html">PKCS12</a> one.</p>
 <h3>Parameters</h3>
-
-<p><a name="keyPasswd"></a>
-<code>keyPasswd</code> - key entry password.
+<a name="keyPasswd"></a>
+<code>keyPasswd</code> - key entry password.<a name="aliasFilter"></a>
+<code>aliasFilter</code> - filter regex to include the specific aliases only.
 </BODY>
 </HTML>
