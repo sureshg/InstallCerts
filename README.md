@@ -1,4 +1,4 @@
-# 🏺 Install Certs [![version][version-svg]][download] [![api-doc][doc-svg]][apidoc-url]
+# 🏺 Install Certs [![version][version-svg]][download] [![build][travis-svg]][travis-url] [![api-doc][doc-svg]][apidoc-url]
 
 `InstallCerts` is a simple cli tool to create [PKCS12][pkcs-wiki] trustStore by retrieving server's TLS certificates.
 You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytool-doc] commands, but `InstallCerts` makes it fully automated using a single command.
@@ -249,4 +249,7 @@ OPTIONS
 [pkcs-wiki]: https://en.wikipedia.org/wiki/PKCS_12
 [keytool-doc]: https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html
 [openssl-wiki]: https://en.wikipedia.org/wiki/OpenSSL
+
+[travis-url]: https://travis-ci.org/sureshg/InstallCerts/builds
+[travis-svg]: https://img.shields.io/travis/sureshg/InstallCerts.svg?style=flat-square
 
