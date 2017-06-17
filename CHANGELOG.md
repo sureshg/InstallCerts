@@ -1,4 +1,4 @@
-## 1.0.6
+## 1.1.0
 
 - Upgrade to newer [Gradle Kotlin DSL](https://github.com/gradle/kotlin-dsl).
 - Many bug fixes
