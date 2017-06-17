@@ -1,3 +1,8 @@
+## 1.0.5
+
+- Upgrade to newer [Gradle Kotlin DSL](https://github.com/gradle/kotlin-dsl).
+- Many bug fixes
+
 ## 1.0.4
 
 - Support to exclude the default JDK cacerts.

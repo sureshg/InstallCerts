@@ -80,6 +80,8 @@ $dokka.location:io.sureshg.extn$sha256#kotlin.Stringio.sureshg.extn/kotlin.-str
 $dokka.location:io.sureshg.extn$signedBy(java.security.cert.X509Certificate, java.security.cert.X509Certificate)io.sureshg.extn/java.security.cert.-x509-certificate/signed-by.html
 $dokka.location:io.sureshg.extn$strike#kotlin.Stringio.sureshg.extn/kotlin.-string/strike.html
 $dokka.location:io.sureshg.extn$sux#kotlin.Stringio.sureshg.extn/kotlin.-string/sux.html
+$dokka.location:io.sureshg.extn$toBinaryPrefixString(kotlin.Int, kotlin.Boolean)io.sureshg.extn/kotlin.-int/to-binary-prefix-string.html
+$dokka.location:io.sureshg.extn$toBinaryPrefixString(kotlin.Long, kotlin.Boolean)io.sureshg.extn/kotlin.-long/to-binary-prefix-string.html
 $dokka.location:io.sureshg.extn$toKeyStore(java.io.File, kotlin.String, kotlin.CharArray)io.sureshg.extn/java.io.-file/to-key-store.html
 $dokka.location:io.sureshg.extn$toP12KeyStore(java.io.File, kotlin.CharArray)io.sureshg.extn/java.io.-file/to-p12-key-store.html
 $dokka.location:io.sureshg.extn$toPKCS12(java.security.KeyStore, kotlin.CharArray, kotlin.text.Regex)io.sureshg.extn/java.security.-key-store/to-p-k-c-s12.html
