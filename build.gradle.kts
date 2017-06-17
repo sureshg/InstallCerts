@@ -11,16 +11,10 @@ import org.jetbrains.dokka.gradle.*
 import term.*
 
 buildscript {
-    var javaVersion: JavaVersion by extra
-    var kotlinVersion: String by extra
-    var kotlinEAPRepo: String by extra
-    var wrapperVersion: String by extra
-
-    javaVersion = JavaVersion.VERSION_1_8
-    kotlinVersion = "kotlin.version".sysProp
-    wrapperVersion = "wrapper.version".sysProp
-    kotlinEAPRepo = "kotlin.eap.repo".sysProp
-    val dokkaVersion = "dokka.version".sysProp
+    var javaVersion: JavaVersion by extra { JavaVersion.VERSION_1_8 }
+    var kotlinVersion: String by extra { "kotlin.version".sysProp }
+    var kotlinEAPRepo: String by extra { "wrapper.version".sysProp }
+    var wrapperVersion: String by extra { "kotlin.eap.repo".sysProp }
 
     repositories {
         gradleScriptKotlin()
@@ -28,6 +22,7 @@ buildscript {
     }
 
     dependencies {
+        val dokkaVersion = "dokka.version".sysProp
         classpath("org.jetbrains.dokka:dokka-gradle-plugin:$dokkaVersion")
     }
 }

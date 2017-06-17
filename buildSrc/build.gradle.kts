@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile(gradleScriptKotlinApi())
+    compile(gradleKotlinDsl())
     compile(kotlin("stdlib-jre8"))
 }
 
