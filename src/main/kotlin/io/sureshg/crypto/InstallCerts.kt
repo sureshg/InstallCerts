@@ -59,7 +59,7 @@ object InstallCerts {
 
         println("Server sent ${result.chain.size} certificate(s)...".yellow)
         result.chain
-                .filter { it.subjectX500Principal.name != host }
+                .filter { it.subjectX500Principal?.x500Name?.commonName != host }
                 .reversed()
                 .forEachIndexed { idx, cert ->
                     val alias = "$host-${idx + 1}"
