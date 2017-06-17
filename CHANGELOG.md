@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Filter out host issuer CN cert from trust store.
+
 ## 1.1.0
 
 - Upgrade to newer [Gradle Kotlin DSL](https://github.com/gradle/kotlin-dsl).

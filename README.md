@@ -7,7 +7,7 @@ You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytoo
 
 * Binary
 
-   [Download (v1.1.0)][download]
+   [Download (v1.1.1)][download]
 
    > After download, make sure to set the execute permission (`chmod +x installcerts`). Windows users can run the executable jar.
 
@@ -20,7 +20,7 @@ You can achieve the same using [OpenSSL][openssl-wiki] and java [Keytool][keytoo
     ```
     > The binary would be located at `build/libs/installcerts`
     
-    Inorder to build a new version, change `appVersion` in the [gradle.properties](gradle.properties) or pass it to `./gradlew -PappVersion=1.1.0`
+    Inorder to build a new version, change `appVersion` in the [gradle.properties](gradle.properties) or pass it to `./gradlew -PappVersion=1.1.1`
 
 * Github Release
 
@@ -239,10 +239,10 @@ OPTIONS
 ----------
 <sup>**</sup>Require [Java 8 or later][java-download]
 
-[version-svg]: https://img.shields.io/badge/installcerts-1.1.0-green.svg?style=flat-square
-[doc-svg]: https://img.shields.io/badge/apidoc-1.1.0-ff69b4.svg?style=flat-square
+[version-svg]: https://img.shields.io/badge/installcerts-1.1.1-green.svg?style=flat-square
+[doc-svg]: https://img.shields.io/badge/apidoc-1.1.1-ff69b4.svg?style=flat-square
 [apidoc-url]: https://sureshg.github.io/InstallCerts/
-[download]: https://github.com/sureshg/InstallCerts/releases/download/1.1.0/installcerts
+[download]: https://github.com/sureshg/InstallCerts/releases/download/1.1.1/installcerts
 [java-download]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [github-token]: https://github.com/settings/tokens
 [installcert-blog]: https://blogs.oracle.com/gc/entry/unable_to_find_valid_certification
