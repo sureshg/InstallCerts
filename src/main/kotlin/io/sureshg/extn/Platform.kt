@@ -1,6 +1,7 @@
 package io.sureshg.extn
 
-import io.sureshg.extn.Platform.Arch.*
+import io.sureshg.extn.Platform.Arch.x86
+import io.sureshg.extn.Platform.Arch.x86_64
 import io.sureshg.extn.Platform.OS.*
 import kotlin.text.RegexOption.IGNORE_CASE
 

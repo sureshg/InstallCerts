@@ -210,9 +210,9 @@ tasks.withType<ReleaseTask> {
  * Generate Gradle Script Kotlin wrapper.
  */
 task<Wrapper>("wrapper") {
-    description = "Generate Gradle Script Kotlin wrapper v$wrapperVersion"
+    description = "Generate Gradle Script Kotlin wrapper $wrapperVersion"
     distributionType = ALL
-    distributionUrl = getGskURL(wrapperVersion)
+    distributionUrl = gradleKotlinDslUrl(wrapperVersion)
     doFirst {
         println(description)
     }

@@ -2,7 +2,8 @@ package io.sureshg
 
 import io.airlift.airline.SingleCommand
 import io.sureshg.cmd.Install
-import io.sureshg.extn.*
+import io.sureshg.extn.bold
+import io.sureshg.extn.err
 
 /**
  * Main method that runs InstallCerts commands.

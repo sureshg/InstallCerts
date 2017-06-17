@@ -173,6 +173,38 @@ inline val ByteArray.base64: ByteArray get() = Base64.getEncoder().encode(this)
 inline val ByteArray.base64Decode: ByteArray get() = Base64.getDecoder().decode(this)
 
 /**
+ * Returns human readable binary prefix for multiples of bytes.
+ *
+ * @param si [true] if it's SI unit, else it will be treated as Binary Unit.
+ */
+fun Long.toBinaryPrefixString(si: Boolean = false): String {
+    // SI and Binary Units
+    val unit = if (si) 1_000 else 1_024
+    return when {
+        this < unit -> "$this B"
+        else -> {
+            val (prefix, suffix) = when (si) {
+                true -> "kMGTPEZY" to "B"
+                false -> "KMGTPEZY" to "B"
+            }
+            // Get only the integral part of the decimal
+            val exp = (Math.log(this.toDouble()) / Math.log(unit.toDouble())).toInt()
+            // Binary Prefix mnemonic that is prepended to the units.
+            val binPrefix = "${prefix[exp - 1]}$suffix"
+            // Count => (unit^0.x * unit^exp)/unit^exp
+            String.format("%.2f %s", this / Math.pow(unit.toDouble(), exp.toDouble()), binPrefix)
+        }
+    }
+}
+
+/**
+ * Returns human readable binary prefix for multiples of bytes.
+ *
+ * @param si [true] if it's SI unit, else it will be treated as Binary Unit.
+ */
+fun Int.toBinaryPrefixString(si: Boolean = false) = toLong().toBinaryPrefixString(si)
+
+/**
  * Get the root cause by walks through the exception chain to the last element,
  * "root" of the tree, using [Throwable.getCause], and returns that exception.
  */

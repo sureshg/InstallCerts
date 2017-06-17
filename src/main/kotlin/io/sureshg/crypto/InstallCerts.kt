@@ -38,9 +38,9 @@ object InstallCerts {
         }
 
         println("Loading default ca truststore...".cyan)
-        val keyStore = CACertsKeyStore
+        val trustStore = CACertsKeyStore
         println("Opening connection to $host:$port...".cyan)
-        val result = validateCerts(host, port, keyStore, args)
+        val result = validateCerts(host, port, trustStore, args)
 
         when {
             result.chain.isEmpty() -> exit(-1) { "Could not obtain server certificate chain!".err }
@@ -58,28 +58,35 @@ object InstallCerts {
         }
 
         println("Server sent ${result.chain.size} certificate(s)...".yellow)
-        // Start validating from the root.
-        result.chain.asReversed().forEachIndexed { idx, cert ->
-            val alias = "$host-${idx + 1}"
-            println("\n${idx + 1}) Adding certificate to keystore using alias ${alias.bold}...")
-            println(cert.info().fg256())
-            keyStore.setCertificateEntry(alias, cert)
-            if (validateCerts(host, port, keyStore, args).valid) {
-                val filter = if (args.noJdkCaCerts) "$host-.*".toRegex() else null
-                println("Certificate is trusted. Saving the trust-store...".cyan)
-                println("Default JDK trust store is ${if (args.noJdkCaCerts) "excluded.".yellow else "included.".green}\n")
-                keyStore.toPKCS12(aliasFilter = filter).store(keystoreFile.outputStream(), storePasswd.toCharArray())
-                exit(0) {
-                    """|${"PKCS12 truststore saved to ${keystoreFile.absolutePath.bold}".done}
-                       |
-                       |To lists entries in the keystore, run
-                       |${"keytool -list -keystore $keystoreFile --storetype pkcs12".yellow}
-                    """.trimMargin()
+        result.chain
+                .filter { it.subjectX500Principal.name != host }
+                .reversed()
+                .forEachIndexed { idx, cert ->
+                    val alias = "$host-${idx + 1}"
+                    println("\n${idx + 1}) Adding certificate to keystore using alias ${alias.bold}...")
+                    println(cert.info().fg256())
+                    trustStore.setCertificateEntry(alias, cert)
                 }
-            }
-        }
 
-        exit(1) { "Something went wrong. Can't validate the cert chain or require client certs!".err }
+        val filter = if (args.noJdkCaCerts) "$host-.*".toRegex() else null
+        println("\n${"Default JDK trust store is ${if (args.noJdkCaCerts) "excluded." else "included."}".warn}")
+        val keystore = trustStore.toPKCS12(aliasFilter = filter)
+
+        if (validateCerts(host, port, keystore, args).valid) {
+            println("Certificate is trusted. Saving the trust-store...".cyan)
+            keystore.store(keystoreFile.outputStream(), storePasswd.toCharArray())
+            val size = keystoreFile.length().toBinaryPrefixString()
+            exit(0) {
+                """|
+                   |${"PKCS12 truststore saved to ${keystoreFile.absolutePath.bold} (${size.bold}) ".done}
+                   |
+                   |To lists entries in the keystore, run
+                   |${"keytool -list -keystore $keystoreFile --storetype pkcs12 -v".yellow}
+                """.trimMargin()
+            }
+        } else {
+            exit(1) { "Something went wrong. Can't validate the cert chain or require client certs!".err }
+        }
     }
 
     /**

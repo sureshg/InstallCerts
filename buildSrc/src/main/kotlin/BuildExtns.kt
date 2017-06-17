@@ -1,4 +1,5 @@
 import org.gradle.api.Project
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType
 import term.bold
 import term.cyan
 import java.time.LocalDate
@@ -17,7 +18,7 @@ val GradleSnapShotURL = "gradle.snap.url".sysProp
  */
 val String.sysProp: String get() = System.getProperty(this, "")
 
-fun getGskURL(version: String, type: org.gradle.api.tasks.wrapper.Wrapper.DistributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.ALL) = "$GradleSnapShotURL/gradle-script-kotlin-$version-${type.name.toLowerCase()}.zip"
+fun gradleKotlinDslUrl(version: String, type: DistributionType = DistributionType.ALL) = "$GradleSnapShotURL/$version-${type.name.toLowerCase()}.zip"
 
 val buildDateTime by lazy { ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a z")) }
 
