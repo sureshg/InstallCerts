@@ -119,8 +119,8 @@ task<FatCapsule>("makeExecutable") {
     val appName = application.applicationName
     val appMainClass = application.mainClassName
     archiveName = appName
-    reallyExecutable = ReallyExecutableSpec().regular()
-    capsuleManifest = CapsuleManifest().apply {
+    reallyExecutable(closureOf<ReallyExecutableSpec> { regular() })
+    capsuleManifest(closureOf<CapsuleManifest> {
         premainClass = "Capsule"
         mainClass = "Capsule"
         applicationName = appName
@@ -128,7 +128,7 @@ task<FatCapsule>("makeExecutable") {
         applicationVersion = version
         jvmArgs = listOf("-client", "-Djava.security.egd=file:/dev/./urandom")
         minJavaVersion = minJavaVer
-    }
+    })
     description = "Create $archiveName executable."
     dependsOn("clean")
 
