@@ -13,11 +13,10 @@ import term.*
 buildscript {
     var javaVersion: JavaVersion by extra { JavaVersion.VERSION_1_8 }
     var kotlinVersion: String by extra { "kotlin.version".sysProp }
-    var kotlinEAPRepo: String by extra { "wrapper.version".sysProp }
-    var wrapperVersion: String by extra { "kotlin.eap.repo".sysProp }
+    var kotlinEAPRepo: String by extra { "kotlin.eap.repo".sysProp }
+    var wrapperVersion: String by extra { "wrapper.version".sysProp }
 
     repositories {
-        gradleScriptKotlin()
         maven { setUrl("https://dl.bintray.com/kotlin/kotlin-eap") }
     }
 
@@ -83,12 +82,12 @@ tasks.withType<KotlinCompile> {
 }
 
 repositories {
-    gradleScriptKotlin()
+    jcenter()
     maven { setUrl(kotlinEAPRepo) }
 }
 
 dependencies {
-    compile(kotlin("stdlib-jre8"))
+    compile(kotlin("stdlib-jre8", kotlinVersion))
     compile("io.airlift:airline:0.7")
 }
 

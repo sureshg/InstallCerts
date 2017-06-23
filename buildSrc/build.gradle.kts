@@ -1,16 +1,11 @@
-buildscript {
-    repositories {
-        gradleScriptKotlin()
-    }
-}
-
 plugins {
-    val ktPlugin = System.getProperty("kotlin.version") ?: "1.1.2-2"
+    `kotlin-dsl`
+    val ktPlugin = System.getProperty("kotlin.version") ?: "1.1.3"
     kotlin("jvm", ktPlugin)
 }
 
 repositories {
-    gradleScriptKotlin()
+    jcenter()
 }
 
 dependencies {

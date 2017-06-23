@@ -1,3 +1,8 @@
+## 1.1.2
+
+- Upgrade to kotlin 1.1.3
+- Build script fixes 
+
 ## 1.1.1
 
 - Filter out host issuer CN cert from trust store.
