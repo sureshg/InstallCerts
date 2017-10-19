@@ -1,6 +1,6 @@
-package io.sureshg.extn
+package io.github.sureshg.extn
 
-import io.sureshg.extn.KeyStoreType.PKCS12
+import io.github.sureshg.extn.KeyStoreType.PKCS12
 import sun.security.x509.*
 import java.io.File
 import java.net.URI

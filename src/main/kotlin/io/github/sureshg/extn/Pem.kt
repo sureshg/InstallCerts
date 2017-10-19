@@ -1,4 +1,4 @@
-package io.sureshg.extn
+package io.github.sureshg.extn
 
 import java.io.File
 import java.nio.charset.StandardCharsets.US_ASCII

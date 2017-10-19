@@ -64,6 +64,9 @@ java {
     targetCompatibility = javaVersion
 }
 
+kotlin {
+    this.experimental.coroutines
+}
 /**
  * Configure application plugin
  */

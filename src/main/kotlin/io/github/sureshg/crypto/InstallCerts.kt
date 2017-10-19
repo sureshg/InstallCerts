@@ -1,7 +1,7 @@
-package io.sureshg.crypto
+package io.github.sureshg.crypto
 
-import io.sureshg.cmd.Install
-import io.sureshg.extn.*
+import io.github.sureshg.cmd.Install
+import io.github.sureshg.extn.*
 import java.io.File
 import java.net.InetSocketAddress
 import java.security.KeyStore

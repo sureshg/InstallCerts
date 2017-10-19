@@ -1,4 +1,4 @@
-package io.sureshg.extn
+package io.github.sureshg.extn
 
 /**
  * ANSI color/graphics extension functions.

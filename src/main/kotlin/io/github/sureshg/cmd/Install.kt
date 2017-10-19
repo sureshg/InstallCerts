@@ -1,15 +1,12 @@
-package io.sureshg.cmd
+package io.github.sureshg.cmd
 
 import io.airlift.airline.Arguments
 import io.airlift.airline.Command
 import io.airlift.airline.HelpOption
 import io.airlift.airline.Option
-import io.sureshg.crypto.InstallCerts
-import io.sureshg.extn.BuildInfo.*
-import io.sureshg.extn.bold
-import io.sureshg.extn.cyan
-import io.sureshg.extn.getVal
-import io.sureshg.extn.jarManifest
+import io.github.sureshg.crypto.InstallCerts
+import io.github.sureshg.extn.BuildInfo.*
+import io.github.sureshg.extn.jarManifest
 import java.net.URL
 import javax.inject.Inject
 

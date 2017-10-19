@@ -1,4 +1,4 @@
-package io.sureshg.extn
+package io.github.sureshg.extn
 
 import sun.misc.HexDumpEncoder
 import java.io.File

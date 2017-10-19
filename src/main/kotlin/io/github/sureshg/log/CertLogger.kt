@@ -1,6 +1,6 @@
-package io.sureshg.log
+package io.github.sureshg.log
 
-import io.sureshg.extn.*
+import io.github.sureshg.extn.*
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.MessageFormat
